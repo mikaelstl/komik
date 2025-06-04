@@ -5,8 +5,9 @@ import 'package:komik/assets/palette.dart';
 import 'package:komik/assets/typography.dart';
 import 'package:komik/components/buttons/options_btn.dart';
 import 'package:komik/components/cards/comic_thumb.dart';
+import 'package:komik/service/utils/color_picker.dart';
 
-class ReadingComicCard extends StatelessWidget {
+class ReadingComicCard extends StatefulWidget {
   final double width;
 
   final String    title;
@@ -28,11 +29,28 @@ class ReadingComicCard extends StatelessWidget {
   });
 
   @override
+  State<ReadingComicCard> createState() => _ReadingComicCardState();
+}
+
+class _ReadingComicCardState extends State<ReadingComicCard> {
+  Color background = Palette.items;
+
+  @override
+  void initState() {
+    super.initState();
+    ColorPicker.pickDominantColor(image: MemoryImage(widget.thumb)).then(
+      (color) => setState(() {
+        background = color;
+      })
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => callback(),
+      onTap: () => widget.callback(),
       child: Container(
-        width: width,
+        width: widget.width,
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -51,7 +69,7 @@ class ReadingComicCard extends StatelessWidget {
       children: [
         ComicThumb(
           height: double.infinity,
-          thumb: MemoryImage(thumb),
+          thumb: MemoryImage(widget.thumb),
         ),
         _title(),
         OptionsBtn()
@@ -67,7 +85,7 @@ class ReadingComicCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: KomikTypography.card_title),
+          Text(widget.title, style: KomikTypography.card_title),
           _subtitles()
         ],
       )
@@ -82,8 +100,8 @@ class ReadingComicCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Edição $edition', style: KomikTypography.subtitles),
-          Text('Página $actualPage / $totalPages', style: KomikTypography.subtitles)
+          Text('Edição ${widget.edition}', style: KomikTypography.subtitles),
+          Text('Página ${widget.actualPage} / ${widget.totalPages}', style: KomikTypography.subtitles)
         ],
       )
     );

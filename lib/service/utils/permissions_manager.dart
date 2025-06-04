@@ -1,26 +1,15 @@
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:easy_permission_validator/easy_permission_validator.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsManager {
-  final EasyPermissionValidator _validator;
-
   late bool haveStorageAccess = false;
   // set _access(bool value) => _access = value;
 
-  PermissionsManager({
-    required EasyPermissionValidator validator
-  }) : _validator = validator;
+  PermissionsManager();
 
   Future<void> request() async {
-    try {
-      if (await androidVersion() < 11) {
-        haveStorageAccess = await _validator.storage();
-      } else {
-        haveStorageAccess = await _validator.manageExternalStorage();
-      }
-    } catch (err) {
-      throw Exception(err);
-    }
+    debugPrint("ON PERMISSIONS");
   }
 
   Future<int> androidVersion() async {

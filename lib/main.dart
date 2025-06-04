@@ -1,5 +1,4 @@
 import 'package:archive/archive_io.dart';
-import 'package:easy_permission_validator/easy_permission_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
@@ -49,12 +48,7 @@ class _KomikAppState extends State<KomikApp> {
 
   final _database = DB();
 
-  late PermissionsManager permissionManager = PermissionsManager(
-      validator: EasyPermissionValidator(
-        context: context,
-        appName: appName,
-      )
-    );
+  late PermissionsManager permissionManager = PermissionsManager();
   late FileManager fileManager;
   late ComicLoader comicLoader;
 
@@ -67,6 +61,7 @@ class _KomikAppState extends State<KomikApp> {
   @override
   void initState() {
     super.initState();
+    initialize();
   }
 
   @override
@@ -102,25 +97,12 @@ class _KomikAppState extends State<KomikApp> {
       appBar: ToolBar(
         leading: Logo(),
       ),
-      body: FutureBuilder(
-        future: initialize(),
-        builder: (context, snapshot) {
-          return permissionManager.haveStorageAccess
+      body: permissionManager.haveStorageAccess
           ? _content(index)
-          : _acceptStoragePermission();
-        }
-      ),
+          : _acceptStoragePermission(),
       bottomNavigationBar: _navBar(),
     );
   }
-
-  // Widget _loading() {
-  //   return Center(
-  //     child: CircularProgressIndicator(
-  //       color: Palette.details,
-  //     ),
-  //   );
-  // }
 
   Widget _acceptStoragePermission() {
     return Center(
@@ -224,27 +206,33 @@ class _KomikAppState extends State<KomikApp> {
   }
 
   Future<void> initialize() async {
-    await _database.init().then(
+    /* await _database.init().then(
       (_) => debugPrint("OBJECT BOX INICIADO")
-    );
+    ); */
 
     await permissionManager.request().then(
-      (_) => setState(() {
-        comicManager = ComicManager(box: _database.store.box<Comic>());
-        collectionManager = CollectionManager(box: _database.store.box<Collection>());
-        readingManager = ReadingManager(
-          box: _database.store.box<Reading>(),
-          comic_manager: comicManager
-        );
-        fileManager = FileManager(permission_manager: permissionManager);
-        comicLoader = ComicLoader(
-          fileManager: fileManager,
-          decoder: CBZDecoder(decoder: ZipDecoder()),
-          comic_manager: comicManager,
-          collection_manager: collectionManager
-        );
-      })
+      (_) => debugPrint("PERMISSÃO ACEITA")
     );
+    setState(() {
+      comicManager = ComicManager(box: _database.store.box<Comic>());
+      debugPrint("ComicManager SETTADO");
+      collectionManager = CollectionManager(box: _database.store.box<Collection>());
+      debugPrint("CollectionManager SETTADO");
+      readingManager = ReadingManager(
+        box: _database.store.box<Reading>(),
+        comic_manager: comicManager
+      );
+      debugPrint("ReadingManager SETTADO");
+      fileManager = FileManager(permission_manager: permissionManager);
+      debugPrint("FileManager SETTADO");
+      comicLoader = ComicLoader(
+        fileManager: fileManager,
+        decoder: CBZDecoder(decoder: ZipDecoder()),
+        comic_manager: comicManager,
+        collection_manager: collectionManager
+      );
+      debugPrint("ComicLoader SETTADO");
+    });
 
     await fileManager.createComicsFolder();
 
