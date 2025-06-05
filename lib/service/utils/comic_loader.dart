@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:archive/archive_io.dart';
 import 'package:flutter/widgets.dart';
 import 'package:komik/service/database/models/collection.dart';
 import 'package:komik/service/dto/comic_infos.dart';
 import 'package:komik/service/managers/collection_manager.dart';
 import 'package:komik/service/managers/comic_manager.dart';
+import 'package:komik/service/utils/cbz_decoder.dart';
 import 'package:komik/service/utils/file_manager.dart';
 import 'package:komik/service/utils/interfaces/file_decorder.dart';
 import 'package:flutter/material.dart';
@@ -15,20 +17,18 @@ import 'package:path/path.dart' as path;
 class ComicLoader {
   late FileManager _fileManager;
 
-  late FileDecoder _decoder;
+  final FileDecoder _decoder = CBZDecoder(decoder: ZipDecoder());
   
   late ComicManager _comicManager;
 
   late CollectionManager _collectionManager;
 
   ComicLoader({
-    required FileDecoder decoder,
     required FileManager fileManager,
     required ComicManager comic_manager,
     required CollectionManager collection_manager
   }) {
     _fileManager = fileManager;
-    _decoder = decoder;
     _comicManager = comic_manager;
     _collectionManager = collection_manager;
   }
@@ -68,7 +68,7 @@ class ComicLoader {
   }
 
   ComicInfos fetchInfos(String fileName) {
-    final title = path.basename(fileName).replaceAll('.cbz', '').split('#');
+    final title = path.basename(fileName).replaceAll('.cbz', '').replaceAll('.cbr', '').split('#');
     final values = title[1].split('-');
 
     final infos = ComicInfos();
@@ -80,7 +80,6 @@ class ComicLoader {
   }
 
   Uint8List fetchThumb(String filePath) {
-
     try {
       final archives = _decoder.decode(filePath);
       

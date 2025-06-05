@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
+import 'package:external_path/external_path.dart';
 import 'package:komik/service/utils/permissions_manager.dart';
 
 class FileManager {
-  late Directory _root;
-
   final PermissionsManager _permissionManager;
   final StreamController<FileSystemEntity> controller = StreamController<FileSystemEntity>();
   
@@ -15,32 +13,25 @@ class FileManager {
   }) : _permissionManager = permission_manager;
 
   Future<void> createComicsFolder() async {
-    print("CRIANDO DIRETORIO COMICS");
-    print("PERIMISSÃO >>>> ${_permissionManager.haveStorageAccess}");
     if (_permissionManager.haveStorageAccess) {
-      final directory = await getExternalStorageDirectory();
+      final path = await ExternalPath.getExternalStoragePublicDirectory('');
       
-      if (directory != null) {
-        _root = directory;
-        await Directory('${directory.path}/Comics').create(recursive: true);
-        print("DIRECTORY CREATED");
-      }
-
-      print(directory?.path);
+      await Directory('$path/Comics').create(recursive: true);
     }
   }
 
   Stream<File> fetch() async* {
     if (_permissionManager.haveStorageAccess) {
       try {
-        print(_root.path);
-        final directory = Directory('${_root.path}/Comics');
+        final path = await ExternalPath.getExternalStoragePublicDirectory('Comics');
+        
+        final directory = Directory(path);
  
-        final files = await directory.list().toList();
+        final files = directory
+                      .list(recursive: true, followLinks: false);
                 
-        for (final file in files) {
+        await for (final file in files) {
           if (isComicFile(file as File)) {
-            await _renameCBR(file);
             yield file;
           }
         }
@@ -61,10 +52,10 @@ class FileManager {
     }
   }
 
-  _renameCBR(File file) async {
-    if (file.path.endsWith('.cbr')) {
-      await file.rename(file.path.replaceAll('.cbr', '.cbz'));
-    }
-  }
+  // _renameCBR(File file) async {
+  //   if (file.path.endsWith('.cbr')) {
+  //     await file.rename(file.path.replaceAll('.cbr', '.cbz'));
+  //   }
+  // }
 
 }

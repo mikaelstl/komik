@@ -1,5 +1,4 @@
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsManager {
@@ -9,7 +8,19 @@ class PermissionsManager {
   PermissionsManager();
 
   Future<void> request() async {
-    debugPrint("ON PERMISSIONS");
+    try {
+      final version = await androidVersion();
+
+      if (version < 11) {
+        final status = await Permission.storage.request();
+        haveStorageAccess = status.isGranted;
+      } else {
+        final status = await Permission.manageExternalStorage.request();
+        haveStorageAccess = status.isGranted;
+      }
+    } catch (err) {
+      throw Exception('Erro ao solicitar permissão: $err');
+    }
   }
 
   Future<int> androidVersion() async {

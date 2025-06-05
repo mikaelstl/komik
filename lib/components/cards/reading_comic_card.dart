@@ -54,7 +54,7 @@ class _ReadingComicCardState extends State<ReadingComicCard> {
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: Palette.items,
+          color: background,
         ),
         height: 145,
         child: _content(),
