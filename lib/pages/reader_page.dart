@@ -76,15 +76,14 @@ class _ReaderPageState extends State<ReaderPage> {
       appBar: ReaderToolBar(
         title: infos.title,
       ),
-      body: _reader(),
+      body: Center(child: _reader()),
       bottomSheet: _pages(),
     );
   }
 
   Widget _reader() {
     final width = MediaQuery.of(context).size.width;
-    return Center(
-      child: GestureDetector(
+    return GestureDetector(
         onDoubleTapDown: (details) {
           _doubleTapDetails = details;
         },
@@ -116,12 +115,13 @@ class _ReaderPageState extends State<ReaderPage> {
             });
           }
         },
-        child: PageViewer(
-          image: actualPage,
-          transformationController: _controller
+        child: SizedBox.expand(
+          child: PageViewer(
+            image: actualPage,
+            transformationController: _controller
+          ),
         )
-      ),
-    );
+      );
   }
 
   Widget _pages() {
