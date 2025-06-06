@@ -1,4 +1,3 @@
-import 'package:archive/archive_io.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
@@ -25,10 +24,10 @@ import 'package:komik/service/managers/comic_manager.dart';
 import 'package:komik/service/managers/reading_manager.dart';
 // import 'package:komik/service/database/models/comic.dart';
 // import 'package:komik/service/models/comic.dart';
-import 'package:komik/service/utils/cbz_decoder.dart';
 import 'package:komik/service/utils/comic_loader.dart';
 import 'package:komik/service/utils/file_manager.dart';
 import 'package:komik/service/utils/permissions_manager.dart';
+import 'package:komik/widgets/accept_storage_permission.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -101,33 +100,11 @@ class _KomikAppState extends State<KomikApp> {
         builder: (context, snapshot) {
           return permissionManager.haveStorageAccess
           ? _content(index)
-          : _acceptStoragePermission();
+          : AcceptStoragePermission();
         }
       ),
       bottomNavigationBar: _navBar(),
     );
-  }
-
-  Widget _acceptStoragePermission() {
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Aceite a permissão para acesso ao armazenamento',
-          style: KomikTypography.base,
-          textAlign: TextAlign.center,
-        ),
-        TextButton(
-            onPressed: () {
-              debugPrint('Go to Phone Settings');
-              openAppSettings();
-            },
-            child: Text('Ir para configurações',
-                style: KomikTypography.action_button))
-      ],
-    ));
   }
 
   Widget _content(int index) {

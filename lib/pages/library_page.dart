@@ -92,7 +92,7 @@ class LibraryPage extends StatelessWidget {
   }
 
   Widget _comics(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<List<Comic>>(
       stream: comicManager.fetch(),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {

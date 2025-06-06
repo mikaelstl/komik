@@ -23,7 +23,7 @@ class FileManager {
   Stream<File> fetch() async* {
     if (_permissionManager.haveStorageAccess) {
       try {
-        final path = await ExternalPath.getExternalStoragePublicDirectory('Comics');
+        final path = await ExternalPath.getExternalStoragePublicDirectory('Comics/teste');
         
         final directory = Directory(path);
  

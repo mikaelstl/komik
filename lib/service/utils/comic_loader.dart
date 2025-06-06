@@ -33,7 +33,7 @@ class ComicLoader {
     _collectionManager = collection_manager;
   }
   
-  void load() async {
+  void load() {
     try {
       debugPrint("LOADING COMICS");
 
@@ -128,13 +128,13 @@ class ComicLoader {
     }
   }
 
-  List<MemoryImage> fetchPages(String filePath) {
+  List<Uint8List> fetchPages(String filePath) {
     final archives = _decoder
                       .decode(filePath)
                       .files;
     try {
       return archives.where((archive) => isImage(archive.name))
-                   .map((archive) => MemoryImage(archive.content))
+                   .map((archive) => archive.content)
                    .toList();
     } catch (e) {
       final extension = path.extension(filePath);

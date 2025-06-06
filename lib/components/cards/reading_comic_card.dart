@@ -5,9 +5,8 @@ import 'package:komik/assets/palette.dart';
 import 'package:komik/assets/typography.dart';
 import 'package:komik/components/buttons/options_btn.dart';
 import 'package:komik/components/cards/comic_thumb.dart';
-import 'package:komik/service/utils/color_picker.dart';
 
-class ReadingComicCard extends StatefulWidget {
+class ReadingComicCard extends StatelessWidget {
   final double width;
 
   final String    title;
@@ -29,32 +28,15 @@ class ReadingComicCard extends StatefulWidget {
   });
 
   @override
-  State<ReadingComicCard> createState() => _ReadingComicCardState();
-}
-
-class _ReadingComicCardState extends State<ReadingComicCard> {
-  Color background = Palette.items;
-
-  @override
-  void initState() {
-    super.initState();
-    ColorPicker.pickDominantColor(image: MemoryImage(widget.thumb)).then(
-      (color) => setState(() {
-        background = color;
-      })
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => widget.callback(),
+      onTap: () => callback(),
       child: Container(
-        width: widget.width,
+        width: width,
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: background,
+          color: Palette.transparent,
         ),
         height: 145,
         child: _content(),
@@ -69,7 +51,7 @@ class _ReadingComicCardState extends State<ReadingComicCard> {
       children: [
         ComicThumb(
           height: double.infinity,
-          thumb: MemoryImage(widget.thumb),
+          thumb: MemoryImage(thumb),
         ),
         _title(),
         OptionsBtn()
@@ -85,7 +67,7 @@ class _ReadingComicCardState extends State<ReadingComicCard> {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.title, style: KomikTypography.card_title),
+          Text(title, style: KomikTypography.card_title),
           _subtitles()
         ],
       )
@@ -100,8 +82,8 @@ class _ReadingComicCardState extends State<ReadingComicCard> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Edição ${widget.edition}', style: KomikTypography.subtitles),
-          Text('Página ${widget.actualPage} / ${widget.totalPages}', style: KomikTypography.subtitles)
+          Text('Edição $edition', style: KomikTypography.subtitles),
+          Text('Página $actualPage / $totalPages', style: KomikTypography.subtitles)
         ],
       )
     );
