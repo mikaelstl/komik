@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/icons/logo.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/tool-bars/tool_bar.dart';
 import 'package:komik/pages/collection_info.dart';
 import 'package:komik/pages/collections_page.dart';
@@ -28,7 +27,6 @@ import 'package:komik/service/utils/comic_loader.dart';
 import 'package:komik/service/utils/file_manager.dart';
 import 'package:komik/service/utils/permissions_manager.dart';
 import 'package:komik/widgets/accept_storage_permission.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
