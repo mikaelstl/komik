@@ -1,5 +1,4 @@
 import 'package:komik/objectbox.g.dart';
-import 'package:komik/service/database/models/comic.dart';
 import 'package:komik/service/database/models/reading.dart';
 import 'package:komik/service/managers/comic_manager.dart';
 
@@ -20,7 +19,7 @@ class ReadingManager {
   }) {
     final comic = _comicManager.get(id: comicID);
 
-    Reading? reading = existsByComic(comic!);
+    Reading? reading = existsByComic(comic!.id);
 
     if (reading != null) {
       reading.actualPage = actualPage;
@@ -42,9 +41,9 @@ class ReadingManager {
             .map((value) => value.find());
   }
 
-  Reading? existsByComic(Comic comic) {
+  Reading? existsByComic(int id) {
     return _box
-            .query(Reading_.comic.equals(comic.id))
+            .query(Reading_.comic.equals(id))
             .build().findFirst();
   }
 }

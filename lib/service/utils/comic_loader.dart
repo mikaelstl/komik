@@ -68,7 +68,7 @@ class ComicLoader {
   }
 
   ComicInfos fetchInfos(String fileName) {
-    final title = path.basename(fileName).replaceAll('.cbz', '').replaceAll('.cbr', '').split('#');
+    final title = path.basename(fileName).replaceAll('.cbz', '').split('#');
     final values = title[1].split('-');
 
     final infos = ComicInfos();

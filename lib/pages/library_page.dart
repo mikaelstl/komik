@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:heroicons/heroicons.dart';
-import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/cards/comic_card.dart';
 import 'package:komik/components/cards/reading_comic_card.dart';
 import 'package:komik/components/devider/section_devider.dart';
+import 'package:komik/components/labels/not_found_comics.dart';
 import 'package:komik/components/utils/scroller/scroller.dart';
 import 'package:komik/service/dto/comic_reader_infos.dart';
 import 'package:komik/service/managers/comic_manager.dart';
@@ -24,6 +22,7 @@ class LibraryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // margin: EdgeInsets.symmetric(vertical: 16),
       height: double.infinity,
       alignment: Alignment.topCenter,
       child: _content(context)
@@ -32,14 +31,14 @@ class LibraryPage extends StatelessWidget {
 
   Widget _content(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        spacing: 28,
-        children: [
-          _reading(),
-          _comics(context)
-        ]
-      )
-    );
+        child: Column(
+          spacing: 28,
+          children: [
+            _reading(),
+            _comics(context)
+          ]
+        )
+      );
   }
 
   Widget _reading() {
@@ -97,7 +96,7 @@ class LibraryPage extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
-            child: _notFoundComics()
+            child: NotFoundComics()
           );
         }
         return _comicsFounded(context, snapshot.data!);
@@ -140,31 +139,6 @@ class LibraryPage extends StatelessWidget {
           ),  
         )
       ]
-    );
-  }
-
-  Widget _notFoundComics() {
-    return Column(
-      spacing: 12,
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        HeroIcon(
-          HeroIcons.bookmarkSquare,
-          size: 52,
-          color: Palette.comic_icon,
-          style: HeroIconStyle.solid,
-        ),
-        Text('Nenhum quadrinho encontrado', style: KomikTypography.base),
-        TextButton(
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.all(0)
-              
-          ),
-          onPressed: () => debugPrint('Go to Files Selector'),
-          child: Text('Adicionar', style: KomikTypography.action_button)
-        )
-      ],
     );
   }
 }

@@ -34,7 +34,7 @@ class ComicTile extends StatelessWidget {
               thumb: MemoryImage(thumb),
             ),
           ),
-          Text('#$edition', style: KomikTypography.action_button),
+          Text('#$edition', style: KomikTypography.base),
           Text(subtitle, style: KomikTypography.subtitles),
         ],
       ),

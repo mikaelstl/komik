@@ -34,12 +34,6 @@ class _ReaderPageState extends State<ReaderPage> {
   Uint8List actualPage = Uint8List(0);
 
   @override
-  void initState() {
-    super.initState();
-    _enterFullScreenMode();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     infos = ModalRoute.of(context)?.settings.arguments as ComicReaderInfos;
@@ -47,8 +41,8 @@ class _ReaderPageState extends State<ReaderPage> {
       infos.path
     );
     infos.totalPages = pages.length;
-    actualPageIndex = infos.initPage;
-    actualPage = pages[infos.initPage];
+    actualPageIndex = widget.readingManager.existsByComic(infos.comicID)?.actualPage ?? 0;
+    actualPage = pages[actualPageIndex];
   }
 
   @override
@@ -131,12 +125,6 @@ class _ReaderPageState extends State<ReaderPage> {
       child: Text('${actualPageIndex+1} - ${infos.totalPages}', style: KomikTypography.base),
     );
   }
-
-  void _enterFullScreenMode() {
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.immersiveSticky,
-    );
-}
 
   bool get isNotFirstPage => actualPageIndex > 0;
 

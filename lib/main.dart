@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/icons/logo.dart';
@@ -30,6 +31,9 @@ import 'package:komik/widgets/accept_storage_permission.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
   runApp(const KomikApp());
 }
 
@@ -58,6 +62,12 @@ class _KomikAppState extends State<KomikApp> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _database.dispose();
   }
 
   @override
@@ -111,7 +121,9 @@ class _KomikAppState extends State<KomikApp> {
           comicManager: comicManager,
           readingManager: readingManager
         ),
-      1: ComicsPage(),
+      1: ComicsPage(
+        comicManager: comicManager,
+      ),
       2: CollectionsPage(
         collectionManager: collectionManager,
       ),
