@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
 import 'package:komik/assets/typography.dart';
 import 'package:komik/components/buttons/options_btn.dart';
@@ -11,6 +12,8 @@ class ComicCard extends StatelessWidget {
   final String    subtitle;
   final String    edition;
   final Uint8List thumb;
+
+  final bool isReading;
   
   final Function() callback;
   const ComicCard({
@@ -19,7 +22,8 @@ class ComicCard extends StatelessWidget {
     required this.subtitle,
     required this.edition,
     required this.thumb,
-    required this.callback
+    required this.callback,
+    this.isReading = false
   });
 
   @override
@@ -43,7 +47,7 @@ class ComicCard extends StatelessWidget {
       children: [
         _leading(),
         _title(),
-        /*OptionsBtn()*/Container()
+        OptionsBtn()
       ],
     );
   }
@@ -54,9 +58,19 @@ class ComicCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
       ),
-      child: ComicThumb(
-        thumb: MemoryImage(thumb),
-      ),
+      child: Stack(
+        children: [
+          ComicThumb(
+            thumb: MemoryImage(thumb),
+          ),
+          isReading ? HeroIcon(
+            HeroIcons.bookmark,
+            style: HeroIconStyle.solid,
+            color: Palette.details,
+            size: 20,
+          ) : Container(),
+        ],
+      )
     );
   }
 

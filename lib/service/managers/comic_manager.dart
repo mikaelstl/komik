@@ -50,13 +50,9 @@ class ComicManager implements SearchQuery<Comic> {
 
   void edit({
     required int id,
-    required CreateComicDTO update
+    required Comic update
   }) {
-    final comic = _box.get(id);
-
-    if (comic != null) {
-      
-    }
+    _box.put(update, mode: PutMode.update);
   }
 
   bool haveNoData(){

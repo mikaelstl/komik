@@ -32,6 +32,9 @@ class ReadingManager {
 
       _box.put(reading);
     }
+
+    comic.reading = true;
+    _comicManager.edit(id: comic.id, update: comic);
   }
 
   Stream<List<Reading>> fetch() {

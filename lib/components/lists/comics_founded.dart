@@ -29,28 +29,33 @@ class ComicsFounded extends StatelessWidget {
           child: Column(
             spacing: 12,
             children: comics.map( 
-              (comic) => ComicCard(
-                title: comic.title,
-                subtitle: comic.subtitle,
-                edition: 'Edição ${comic.edition}',
-                thumb: comic.thumb,
-                callback: () {
-                  final infos = ComicReaderInfos();
-                    infos.comicID = comic.id;
-                    infos.title = comic.title;
-                    infos.path = comic.path;
-                    infos.initPage = 0;
-                  Navigator.pushNamed(
-                    context,
-                    '/reader',
-                    arguments: infos
-                  );
-                }
-              )
+              (comic) {
+                return ComicCard(
+                  title: comic.title,
+                  subtitle: comic.subtitle,
+                  edition: 'Edição ${comic.edition}',
+                  thumb: comic.thumb,
+                  isReading: comic.reading,
+                  callback: () => toReader(comic, context)
+                );
+              }
             ).toList()
           ),  
         )
       ]
+    );
+  }
+
+  void toReader(Comic comic, BuildContext ctx) {
+    final infos = ComicReaderInfos();
+      infos.comicID = comic.id;
+      infos.title = comic.title;
+      infos.path = comic.path;
+      infos.initPage = 0;
+    Navigator.pushNamed(
+      ctx,
+      '/reader',
+      arguments: infos
     );
   }
 }

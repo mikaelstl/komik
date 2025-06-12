@@ -24,7 +24,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 5865021797219153294),
       name: 'Comic',
-      lastPropertyId: const obx_int.IdUid(10, 3466599008865706465),
+      lastPropertyId: const obx_int.IdUid(11, 7678703691467885808),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -63,7 +63,12 @@ final _entities = <obx_int.ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const obx_int.IdUid(1, 4861892148618494335),
-            relationTarget: 'Collection')
+            relationTarget: 'Collection'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(11, 7678703691467885808),
+            name: 'reading',
+            type: 1,
+            flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
@@ -194,7 +199,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final editionOffset = fbb.writeString(object.edition);
           final thumbOffset = fbb.writeListInt8(object.thumb);
           final pathOffset = fbb.writeString(object.path);
-          fbb.startTable(11);
+          fbb.startTable(12);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, titleOffset);
           fbb.addOffset(2, subtitleOffset);
@@ -202,6 +207,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(4, thumbOffset);
           fbb.addOffset(5, pathOffset);
           fbb.addInt64(8, object.collection.targetId);
+          fbb.addBool(10, object.reading);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -224,7 +230,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
               thumb: thumbParam,
               edition: editionParam,
               path: pathParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..reading =
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 24, false);
           object.collection.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
           object.collection.attach(store);
@@ -335,6 +343,10 @@ class Comic_ {
   /// See [Comic.collection].
   static final collection =
       obx.QueryRelationToOne<Comic, Collection>(_entities[0].properties[6]);
+
+  /// See [Comic.reading].
+  static final reading =
+      obx.QueryBooleanProperty<Comic>(_entities[0].properties[7]);
 }
 
 /// [Collection] entity fields to define ObjectBox queries.

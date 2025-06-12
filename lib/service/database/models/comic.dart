@@ -13,6 +13,7 @@ class Comic {
   late String        edition;
   late Uint8List     thumb;
   late String        path;
+  late bool          reading = false;
 
   final collection = ToOne<Collection>();
 
