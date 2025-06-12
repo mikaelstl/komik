@@ -43,7 +43,7 @@ class ComicCard extends StatelessWidget {
       children: [
         _leading(),
         _title(),
-        OptionsBtn()
+        /*OptionsBtn()*/Container()
       ],
     );
   }

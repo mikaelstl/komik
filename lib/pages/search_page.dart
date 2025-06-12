@@ -1,28 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:komik/components/devider/section_devider.dart';
+import 'package:komik/components/labels/not_found_comics.dart';
+import 'package:komik/components/lists/comics_founded.dart';
+import 'package:komik/components/lists/collections_founded.dart';
 import 'package:komik/components/tool-bars/search_bar.dart';
 import 'package:komik/components/utils/checkboxes/check_mode.dart';
+import 'package:komik/service/managers/collection_manager.dart';
+import 'package:komik/service/managers/comic_manager.dart';
 import 'package:komik/service/utils/states/search_filter_type.dart';
 
 class SearchPage extends StatefulWidget {
+  final ComicManager comicManager;
+  final CollectionManager collectionManager;
 
-  const SearchPage({super.key});
+  const SearchPage({
+    super.key,
+    required this.comicManager,
+    required this.collectionManager
+  });
 
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  void _onChangeType(SearchFilterType type){
-    setState(() {
-      SearchFilterTypeState.mode.value = type;
+  final TextEditingController controller = TextEditingController(text: '');
+  String _pattern = '';
+
+  bool seeComics = true;
+  bool seeCollections = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller.addListener(() {
+      setState(() => _pattern = controller.text);
     });
   }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SearchToolBar(),
+        appBar: SearchToolBar(
+          controller: controller,
+        ),
         body: Container(
         height: double.infinity,
         margin: EdgeInsets.symmetric(vertical: 16),
@@ -50,30 +71,78 @@ class _SearchPageState extends State<SearchPage> {
           label: 'Tudo',
           type: SearchFilterType.all,
           group: SearchFilterTypeState.mode.value,
-          onChanged: _onChangeType,
+          onChanged: (type) {
+            setState(() {
+              seeComics = true;
+              seeCollections = true;
+              SearchFilterTypeState.mode.value = type;
+            });
+          },
         ),
         CheckMode(
           label: 'Quadrinhos',
           type: SearchFilterType.comics,
           group: SearchFilterTypeState.mode.value,
-          onChanged: _onChangeType,
+          onChanged: (type) {
+            setState(() {
+              seeCollections = false;
+              seeComics = true;
+              SearchFilterTypeState.mode.value = type;
+            });
+          },
         ),
         CheckMode(
           label: 'Coleções',
           type: SearchFilterType.collections,
           group: SearchFilterTypeState.mode.value,
-          onChanged: _onChangeType,
+          onChanged: (type) {
+            setState(() {
+              seeComics = false;
+              seeCollections = true;
+              SearchFilterTypeState.mode.value = type;
+            });
+          },
         )
       ],
     ),
     );
   }
 
-  Widget _results(/* Widget card */) {
+  Widget _results() {
     return Column(
+      spacing: 30,
       children: [
-        SectionDevider(text: 'Resultado')
+        seeComics ? _comics() : Container(),
+        seeCollections ? _collections() : Container()
       ],
+    );
+  }
+
+  Widget _comics() {
+    return StreamBuilder(
+      stream: widget.comicManager.search(pattern: _pattern),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: NotFoundComics()
+          );
+        }
+        return ComicsFounded(with_section: true, comics: snapshot.data!);
+      }
+    );
+  }
+
+  Widget _collections() {
+    return StreamBuilder(
+      stream: widget.collectionManager.search(pattern: _pattern),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: NotFoundComics()
+          );
+        }
+        return CollectionsFounded(with_section: true, collections: snapshot.data!);
+      }
     );
   }
 }

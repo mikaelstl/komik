@@ -85,7 +85,10 @@ class _KomikAppState extends State<KomikApp> {
       initialRoute: '/',
       routes: {
         '/': (context) => _app(),
-        '/search': (context) => SearchPage(),
+        '/search': (context) => SearchPage(
+          comicManager: comicManager,
+          collectionManager: collectionManager,
+        ),
         '/collection': (context) => CollectionInfoPage(),
         '/reader': (context) => ReaderPage(
                                   fetchPages: comicLoader.fetchPages,
@@ -210,12 +213,14 @@ class _KomikAppState extends State<KomikApp> {
             box: _database.store.box<Reading>(),
             comic_manager: comicManager
           );
-          fileManager = FileManager(permission_manager: permissionManager);
           comicLoader = ComicLoader(
-            fileManager: fileManager,
             // decoder: CBZDecoder(decoder: ZipDecoder()),
             comic_manager: comicManager,
             collection_manager: collectionManager
+          );
+          fileManager = FileManager(
+            comic_loader: comicLoader,
+            permission_manager: permissionManager
           );
         });  
       }
@@ -223,8 +228,8 @@ class _KomikAppState extends State<KomikApp> {
     
     await fileManager.createComicsFolder();
 
-    if (await comicManager.haveNoData()) {
-      comicLoader.load();
+    if (comicManager.haveNoData()) {
+      fileManager.fetch();
     }
   }
 }

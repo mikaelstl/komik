@@ -41,7 +41,7 @@ class CollectionCard extends StatelessWidget {
       children: [
         _leading(),
         _infos(),
-        OptionsBtn()
+        /*OptionsBtn()*/Container()
       ],
     );
   }

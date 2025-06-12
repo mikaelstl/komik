@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
+import 'package:komik/assets/typography.dart';
 import 'package:komik/components/buttons/go_back_btn.dart';
 import 'package:komik/components/buttons/menu_btn.dart';
 
 class SearchToolBar extends StatelessWidget implements PreferredSizeWidget {
-  const SearchToolBar({super.key});
+  final TextEditingController _controller;
+
+  const SearchToolBar({
+    super.key,
+    required TextEditingController controller
+  }) : _controller = controller;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +24,8 @@ class SearchToolBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Palette.items,
       leading: GoBackBtn(),
       title: TextField(
+        style: KomikTypography.base,
+        controller: _controller,
         decoration: InputDecoration(
           hoverColor: Palette.white,
           filled: true,

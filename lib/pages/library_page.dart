@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:komik/components/cards/comic_card.dart';
 import 'package:komik/components/cards/reading_comic_card.dart';
 import 'package:komik/components/devider/section_devider.dart';
 import 'package:komik/components/labels/not_found_comics.dart';
+import 'package:komik/components/lists/comics_founded.dart';
 import 'package:komik/components/utils/scroller/scroller.dart';
 import 'package:komik/service/dto/comic_reader_infos.dart';
 import 'package:komik/service/managers/comic_manager.dart';
-import 'package:komik/service/database/models/comic.dart';
 import 'package:komik/service/managers/reading_manager.dart';
 
 class LibraryPage extends StatelessWidget {
@@ -91,7 +90,7 @@ class LibraryPage extends StatelessWidget {
   }
 
   Widget _comics(BuildContext context) {
-    return StreamBuilder<List<Comic>>(
+    return StreamBuilder(
       stream: comicManager.fetch(),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -99,48 +98,9 @@ class LibraryPage extends StatelessWidget {
             child: NotFoundComics()
           );
         }
-        return _comicsFounded(context, snapshot.data!);
+
+        return ComicsFounded(with_section: true, comics: snapshot.data!);
       }
     );
   }
-
-  Widget _comicsFounded(BuildContext context, List<Comic> comics) {
-    return Column(
-      spacing: 12,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SectionDevider(
-          text: 'Quadrinhos',
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            spacing: 12,
-            children: comics.map( 
-              (comic) => ComicCard(
-                title: comic.title,
-                subtitle: comic.subtitle,
-                edition: 'Edição ${comic.edition}',
-                thumb: comic.thumb,
-                callback: () {
-                  final infos = ComicReaderInfos();
-                    infos.comicID = comic.id;
-                    infos.title = comic.title;
-                    infos.path = comic.path;
-                    infos.initPage = 0;
-                  Navigator.pushNamed(
-                    context,
-                    '/reader',
-                    arguments: infos
-                  );
-                }
-              )
-            ).toList()
-          ),  
-        )
-      ]
-    );
-  }
 }
-
-// 

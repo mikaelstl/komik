@@ -54,7 +54,7 @@ class ReadingComicCard extends StatelessWidget {
           thumb: MemoryImage(thumb),
         ),
         _title(),
-        OptionsBtn()
+        /*OptionsBtn()*/Container()
       ],
     );
   }

@@ -1,13 +1,10 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:komik/objectbox.g.dart';
-import 'package:komik/service/database/models/collection.dart';
 import 'package:komik/service/database/models/comic.dart';
-import 'package:komik/service/dto/comic.dart';
-import 'package:komik/service/dto/comic_infos.dart';
+import 'package:komik/service/dto/create_comic.dart';
+import 'package:komik/service/utils/interfaces/search_query.dart';
 
-class ComicManager {
+class ComicManager implements SearchQuery<Comic> {
   late Box<Comic> _box;
 
   ComicManager({
@@ -15,18 +12,15 @@ class ComicManager {
   }) : _box = box;
 
   int create({
-    required ComicInfos infos,
-    required Uint8List thumb,
-    required String path,
-    Collection? collection
+    required CreateComicDTO data
   }) {
     final comic = Comic(
-      title: infos.title,
-      subtitle: infos.subtitle,
-      edition: infos.edition,
-      thumb: thumb,
-      path: path,
-    )..collection.target=collection;
+      title: data.title,
+      subtitle: data.subtitle,
+      edition: data.edition,
+      thumb: data.thumb,
+      path: data.path,
+    )..collection.target = data.collection;
 
     return _box.put(comic);
   }
@@ -37,26 +31,26 @@ class ComicManager {
     return _box
             .query()
             .watch(triggerImmediately: true)
-            .map((value) => value.find());
+            .map((q) => q.find());
   }
 
   Comic? get({ required int id }) {
     return _box.get(id);
   }
 
-  Stream<List<Comic>> findByTitle({
-    required String title
+  @override
+  Stream<List<Comic>> search({
+    required String pattern
   }) {
     return _box
-            .query(
-              Comic_.title.equals(title)
-            )
-            .watch(triggerImmediately: true).map((value) => value.find());
+            .query(Comic_.title.contains(pattern.trim()))
+            .watch(triggerImmediately: true)
+            .map((value) => value.find());
   }
 
   void edit({
     required int id,
-    required ComicDTO update
+    required CreateComicDTO update
   }) {
     final comic = _box.get(id);
 
@@ -65,9 +59,7 @@ class ComicManager {
     }
   }
 
-  Future<bool> haveNoData() async {
-    final data = await fetch().first;
-
-    return data.isEmpty;
+  bool haveNoData(){
+    return _box.count() == 0;
   }
 }

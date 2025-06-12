@@ -4,19 +4,16 @@ import 'dart:typed_data';
 import 'package:archive/archive_io.dart';
 import 'package:flutter/widgets.dart';
 import 'package:komik/service/database/models/collection.dart';
-import 'package:komik/service/dto/comic_infos.dart';
+import 'package:komik/service/dto/create_comic.dart';
 import 'package:komik/service/managers/collection_manager.dart';
 import 'package:komik/service/managers/comic_manager.dart';
 import 'package:komik/service/utils/cbz_decoder.dart';
-import 'package:komik/service/utils/file_manager.dart';
 import 'package:komik/service/utils/interfaces/file_decorder.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as path;
 
 class ComicLoader {
-  late FileManager _fileManager;
-
   final FileDecoder _decoder = CBZDecoder(decoder: ZipDecoder());
   
   late ComicManager _comicManager;
@@ -24,57 +21,40 @@ class ComicLoader {
   late CollectionManager _collectionManager;
 
   ComicLoader({
-    required FileManager fileManager,
     required ComicManager comic_manager,
     required CollectionManager collection_manager
   }) {
-    _fileManager = fileManager;
     _comicManager = comic_manager;
     _collectionManager = collection_manager;
   }
   
-  void load() {
+  void load(File file) {
     try {
-      debugPrint("LOADING COMICS");
-
-      _fileManager.fetch().listen(
-        (File file) {
-          final infos = fetchInfos(file.path);
-
-          Collection? collection = _collectionManager.findByTitle(title: infos.title);
-          if (collection == null) {
-            int collectionId = _collectionManager.create(
-              title: infos.title,
-              description: ''
-            );
-
-            collection = _collectionManager.get(id: collectionId);
-          }
-
-          _comicManager.create(
-            infos: infos,
-            thumb: fetchThumb(file.path),
-            path: file.path,
-            collection: collection
-          );
-        },
-        onError: (err) {
-          debugPrint(err);
-        }
+      final data = fetchInfos(file.path);
+      
+      Collection collection = _collectionManager.find(pattern: data.title) ?? _collectionManager.create(
+        title: data.title,
+        description: ''
       );
+
+      data.collection = _collectionManager.get(id: collection.id);
+      
+      _comicManager.create(data: data);
     } catch (err) {
       throw Exception(err);
     }
   }
 
-  ComicInfos fetchInfos(String fileName) {
-    final title = path.basename(fileName).replaceAll('.cbz', '').split('#');
+  CreateComicDTO fetchInfos(String filePath) {
+    final title = path.basename(filePath).replaceAll('.cbz', '').split('#');
     final values = title[1].split('-');
 
-    final infos = ComicInfos();
+    final infos = CreateComicDTO();
       infos.title = title[0];
       infos.subtitle = values[values.length - 1]!=values[0] ? values[values.length - 1] : '';
       infos.edition = values[0];
+      infos.thumb = fetchThumb(filePath);
+      infos.path = filePath;
 
     return infos;
   }

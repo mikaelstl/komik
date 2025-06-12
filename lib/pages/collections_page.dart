@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
 import 'package:komik/assets/typography.dart';
-import 'package:komik/components/cards/collection_card.dart';
-import 'package:komik/service/database/models/collection.dart';
+import 'package:komik/components/lists/collections_founded.dart';
 import 'package:komik/service/managers/collection_manager.dart';
 
 class CollectionsPage extends StatelessWidget {
@@ -28,28 +27,10 @@ class CollectionsPage extends StatelessWidget {
               return _notFounded();
             }
 
-            return _content(context, snapshot.data!);
+            return CollectionsFounded(with_section: false, collections: snapshot.data!);
           }
         )
       ),
-    );
-  }
-
-  Widget _content(BuildContext context, List<Collection> collections) {
-    return Column(
-      spacing: 12,
-      children: collections.map(
-        (collection) {
-          collection.comics.sort((a,b) => a.edition.compareTo(b.edition));
-
-          return CollectionCard(
-            title: collection.title,
-            editions: [collection.comics.first.edition, collection.comics.last.edition],
-            thumb: collection.comics.first.thumb,
-            callback: () => Navigator.pushNamed(context, '/collection', arguments: collection)
-          );
-        }
-      ).toList(),
     );
   }
 
