@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/buttons/go_back_btn.dart';
 import 'package:komik/components/cards/comic_thumb.dart';
 import 'package:komik/components/cards/comic_tile.dart';
 import 'package:komik/components/devider/section_devider.dart';
+import 'package:komik/components/texts/action_button_text.dart';
+import 'package:komik/components/texts/base_text.dart';
+import 'package:komik/components/texts/titles.dart';
 import 'package:komik/components/tool-bars/tool_bar.dart';
 import 'package:komik/service/database/models/collection.dart';
 import 'package:komik/service/database/models/comic.dart';
@@ -89,7 +91,7 @@ class _CollectionInfoPageState extends State<CollectionInfoPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 10,
         children: [
-          Text(title, style: KomikTypography.title),
+          Titles(title),
           descriptionCard
         ],
       ),
@@ -97,12 +99,11 @@ class _CollectionInfoPageState extends State<CollectionInfoPage> {
   }
 
   Widget _shortDescription(String text) {
-    final description = Text(
+    final description = BaseText(
       text,
       overflow: TextOverflow.ellipsis,
       maxLines: 7,
       textAlign: TextAlign.justify,
-      style: KomikTypography.base,
     );
 
     return Column(
@@ -119,10 +120,9 @@ class _CollectionInfoPageState extends State<CollectionInfoPage> {
   }
 
   Widget _fullDescription(String text) {
-    final description = Text(
+    final description = BaseText(
       text,
       textAlign: TextAlign.justify,
-      style: KomikTypography.base,
     );
 
     return Column(
@@ -178,7 +178,7 @@ class _CollectionInfoPageState extends State<CollectionInfoPage> {
             color: Palette.comic_icon,
             style: HeroIconStyle.solid,
           ),
-          Text('Esta coleção não possui quadrinhos', style: KomikTypography.base),
+          BaseText('Esta coleção não possui quadrinhos'),
         ],
       ),
     );
@@ -202,7 +202,7 @@ class _CollectionInfoPageState extends State<CollectionInfoPage> {
         color: Palette.details,
         style: HeroIconStyle.micro,
       ),
-      label: Text('Ver mais ', style: KomikTypography.action_button),
+      label: ActionButtonText('Ver mais '),
     );
   }
 }

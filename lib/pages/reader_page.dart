@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
+import 'package:komik/components/texts/base_text.dart';
 import 'package:komik/components/tool-bars/reader_tool_bar.dart';
 import 'package:komik/service/dto/comic_reader_infos.dart';
 import 'package:komik/service/managers/reading_manager.dart';
@@ -122,7 +122,7 @@ class _ReaderPageState extends State<ReaderPage> {
       height: 50,
       alignment: Alignment.center,
       color: Palette.background,
-      child: Text('${actualPageIndex+1} - ${infos.totalPages}', style: KomikTypography.base),
+      child: BaseText('${actualPageIndex+1} - ${infos.totalPages}'),
     );
   }
 

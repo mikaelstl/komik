@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
+import 'package:komik/components/texts/base_text.dart';
 import 'package:komik/service/utils/states/search_filter_type.dart';
 
 class CheckMode extends StatelessWidget {
@@ -31,7 +31,7 @@ class CheckMode extends StatelessWidget {
           color: checked ? Palette.details : Palette.items,
           borderRadius: BorderRadius.circular(9999)
         ),
-        child: Text(label, style: KomikTypography.base),
+        child: BaseText(label),
       ),
     );
   }

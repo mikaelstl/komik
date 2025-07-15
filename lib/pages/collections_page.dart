@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/lists/collections_founded.dart';
+import 'package:komik/components/texts/base_text.dart';
 import 'package:komik/service/managers/collection_manager.dart';
 
 class CollectionsPage extends StatelessWidget {
@@ -47,7 +47,7 @@ class CollectionsPage extends StatelessWidget {
             color: Palette.comic_icon,
             style: HeroIconStyle.solid,
           ),
-          Text('Nenhuma coleção', style: KomikTypography.base)
+          BaseText('Nenhuma coleção')
         ],
       ),
     );

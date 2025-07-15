@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
+import 'package:komik/components/texts/option_text.dart';
 
 class OptionsModal extends StatelessWidget {
   const OptionsModal({super.key});
@@ -77,7 +77,7 @@ class OptionsModal extends StatelessWidget {
         color: Palette.white,
         style: HeroIconStyle.solid,
       ),
-      label: Text(label, style: KomikTypography.option)
+      label: OptionText(label)
     );
   }
 }

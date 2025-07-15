@@ -58,4 +58,8 @@ class ComicManager implements SearchQuery<Comic> {
   bool haveNoData(){
     return _box.count() == 0;
   }
+
+  int amount() {
+    return _box.count();
+  }
 }

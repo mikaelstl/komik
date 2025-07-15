@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
+import 'package:komik/components/texts/option_text.dart';
 
 class SettingTile extends StatelessWidget {
   final HeroIcons icon;
@@ -27,7 +27,7 @@ class SettingTile extends StatelessWidget {
         color: Palette.white,
         size: 24,
       ),
-      title: Text(label, style: KomikTypography.option),
+      title: OptionText(label),
       trailing: trailing
     );
   }

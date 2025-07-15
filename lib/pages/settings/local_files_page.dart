@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/buttons/add_btn.dart';
 import 'package:komik/components/cards/folder_tile.dart';
+import 'package:komik/components/texts/option_text.dart';
 import 'package:komik/components/tool-bars/settings_toolbar.dart';
 
 class LocalFilesPage extends StatelessWidget {
@@ -11,7 +11,7 @@ class LocalFilesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SettingsToolBar(
-        title: Text('Local dos arquivos', style: KomikTypography.option)
+        title: OptionText('Local dos arquivos')
       ),
       body: _content(),
       floatingActionButton: AddBtn(

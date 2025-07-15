@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
+import 'package:komik/components/texts/base_text.dart';
 
 class TextInputField extends StatelessWidget {
   final String label;
@@ -19,10 +19,13 @@ class TextInputField extends StatelessWidget {
         spacing: 12,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style:KomikTypography.base),
+          BaseText(label),
           TextField(
             controller: controller,
-            style: KomikTypography.base,
+            style: TextStyle(
+              fontSize: 16,
+              color: Palette.white,
+            ),
             decoration: InputDecoration(
               filled: true,
               fillColor: Palette.items,

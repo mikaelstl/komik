@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/cards/reading_comic_card.dart';
+import 'package:komik/components/texts/base_text.dart';
 import 'package:komik/service/dto/comic_reader_infos.dart';
 import 'package:komik/service/managers/reading_manager.dart';
 
@@ -72,7 +72,7 @@ class ReadingPage extends StatelessWidget {
             color: Palette.comic_icon,
             style: HeroIconStyle.solid,
           ),
-          Text('Nenhuma coleção', style: KomikTypography.base)
+          BaseText('Nenhuma coleção')
         ],
       ),
     );

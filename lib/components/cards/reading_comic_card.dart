@@ -2,9 +2,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/buttons/options_btn.dart';
 import 'package:komik/components/cards/comic_thumb.dart';
+import 'package:komik/components/texts/base_text.dart';
+import 'package:komik/components/texts/subtitle.dart';
 
 class ReadingComicCard extends StatelessWidget {
   final double width;
@@ -67,7 +68,7 @@ class ReadingComicCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: KomikTypography.card_title),
+          BaseText(title),
           _subtitles()
         ],
       )
@@ -82,8 +83,8 @@ class ReadingComicCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Edição $edition', style: KomikTypography.subtitles),
-          Text('Página $actualPage / $totalPages', style: KomikTypography.subtitles)
+          Subtitle('Edição $edition'),
+          Subtitle('Página $actualPage / $totalPages')
         ],
       )
     );

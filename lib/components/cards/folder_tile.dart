@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
+import 'package:komik/components/texts/option_text.dart';
 
 class FolderTile extends StatelessWidget {
   const FolderTile({super.key});
@@ -26,7 +26,7 @@ class FolderTile extends StatelessWidget {
           color: Palette.white,
           size: 24,
         ),
-        title: Text('Pasta', style: KomikTypography.option),
+        title: OptionText('Pasta'),
         trailing: HeroIcon(
           HeroIcons.minusCircle,
           style: HeroIconStyle.solid,

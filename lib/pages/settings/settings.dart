@@ -4,6 +4,9 @@ import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
 import 'package:komik/assets/typography.dart';
 import 'package:komik/components/cards/setting_tile.dart';
+import 'package:komik/components/texts/base_text.dart';
+import 'package:komik/components/texts/option_text.dart';
+import 'package:komik/components/texts/toolbar_title.dart';
 import 'package:komik/components/tool-bars/settings_toolbar.dart';
 
 class Settings extends StatefulWidget {
@@ -22,7 +25,7 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SettingsToolBar(
-        title: Text('Configurações', style: KomikTypography.toolbar_title)
+        title: ToolbarTitle('Configurações')
       ),
       body: _content(),
     );
@@ -100,10 +103,9 @@ class _SettingsState extends State<Settings> {
               spacing: 8,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: KomikTypography.option),
-                Text(
+                OptionText(title),
+                BaseText(
                   subtitle,
-                  style: KomikTypography.base,
                   softWrap: true,
                 )
               ],

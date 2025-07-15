@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:komik/assets/typography.dart';
+import 'package:komik/components/texts/action_button_text.dart';
+import 'package:komik/components/texts/base_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AcceptStoragePermission extends StatelessWidget {
@@ -12,9 +13,8 @@ class AcceptStoragePermission extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
+        BaseText(
           'Aceite a permissão para acesso ao armazenamento',
-          style: KomikTypography.base,
           textAlign: TextAlign.center,
         ),
         TextButton(
@@ -22,8 +22,7 @@ class AcceptStoragePermission extends StatelessWidget {
               debugPrint('Go to Phone Settings');
               openAppSettings();
             },
-            child: Text('Ir para configurações',
-                style: KomikTypography.action_button))
+            child: ActionButtonText('Ir para configurações'))
       ],
     ));
   }

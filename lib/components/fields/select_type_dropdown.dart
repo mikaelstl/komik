@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
+import 'package:komik/components/texts/base_text.dart';
 import 'package:komik/service/utils/enums/comic_type_enum.dart';
 
 class SelectTypeDropdown extends StatefulWidget {
@@ -23,7 +23,7 @@ class _SelectTypeDropdownState extends State<SelectTypeDropdown> {
         spacing: 12,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Tipo', style:KomikTypography.base),
+          BaseText('Tipo'),
           _dropdown()
         ],
       ),
@@ -32,7 +32,10 @@ class _SelectTypeDropdownState extends State<SelectTypeDropdown> {
 
   Widget _dropdown(){
     return DropdownButtonFormField(
-      style: KomikTypography.base,
+      style: TextStyle(
+        fontSize: 16,
+        color: Palette.white,
+      ),
       items: [
         DropdownMenuItem(
           value: ComicTypeEnum.edition,

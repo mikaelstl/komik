@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/cards/comic_thumb.dart';
+import 'package:komik/components/texts/base_text.dart';
+import 'package:komik/components/texts/subtitle.dart';
 
 class ComicTile extends StatelessWidget {
   final String edition;
@@ -34,8 +35,8 @@ class ComicTile extends StatelessWidget {
               thumb: MemoryImage(thumb),
             ),
           ),
-          Text('#$edition', style: KomikTypography.base),
-          Text(subtitle, style: KomikTypography.subtitles),
+          BaseText('#$edition'),
+          Subtitle(subtitle),
         ],
       ),
     );

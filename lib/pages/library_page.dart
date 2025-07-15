@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:komik/assets/palette.dart';
 import 'package:komik/components/cards/reading_comic_card.dart';
 import 'package:komik/components/devider/section_devider.dart';
 import 'package:komik/components/labels/not_found_comics.dart';
 import 'package:komik/components/lists/comics_founded.dart';
+import 'package:komik/components/texts/base_text.dart';
 import 'package:komik/components/utils/scroller/scroller.dart';
 import 'package:komik/service/dto/comic_reader_infos.dart';
 import 'package:komik/service/managers/comic_manager.dart';
@@ -101,6 +103,18 @@ class LibraryPage extends StatelessWidget {
 
         return ComicsFounded(with_section: true, comics: snapshot.data!);
       }
+    );
+  }
+
+  Widget _amount() {
+    return Column(
+      spacing: 10,
+      children: [
+        CircularProgressIndicator(
+          color: Palette.details,
+        ),
+        BaseText('${comicManager.amount()}')
+      ],
     );
   }
 }

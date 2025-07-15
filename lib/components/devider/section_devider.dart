@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
+import 'package:komik/components/texts/label.dart';
 
 class SectionDevider extends StatelessWidget {
   final String text;
@@ -13,7 +13,7 @@ class SectionDevider extends StatelessWidget {
       child: Row(
         spacing: 10,
         children: [
-          Text(text, style: KomikTypography.label,),
+          Label(text),
           Expanded (
             child: Container(
               height: 2,

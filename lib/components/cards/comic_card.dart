@@ -3,9 +3,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/buttons/options_btn.dart';
 import 'package:komik/components/cards/comic_thumb.dart';
+import 'package:komik/components/texts/base_text.dart';
+import 'package:komik/components/texts/subtitle.dart';
 
 class ComicCard extends StatelessWidget {
   final String    title;
@@ -82,7 +83,7 @@ class ComicCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: KomikTypography.card_title),
+          BaseText(title),
           _subtitles()
         ],
       )
@@ -97,8 +98,8 @@ class ComicCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(subtitle, style: KomikTypography.subtitles),
-          Text(edition, style: KomikTypography.subtitles)
+          Subtitle(subtitle),
+          Subtitle(edition)
         ],
       )
     );

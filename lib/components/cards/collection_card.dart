@@ -2,9 +2,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/buttons/options_btn.dart';
 import 'package:komik/components/cards/comic_thumb.dart';
+import 'package:komik/components/texts/base_text.dart';
+import 'package:komik/components/texts/subtitle.dart';
 
 class CollectionCard extends StatelessWidget {
   final String        title;
@@ -67,8 +68,8 @@ class CollectionCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: KomikTypography.card_title),
-          Text('Edições ${editions.first} - ${editions.last}', style: KomikTypography.subtitles),
+          BaseText(title),
+          Subtitle('Edições ${editions.first} - ${editions.last}'),
         ],
       )
     )
