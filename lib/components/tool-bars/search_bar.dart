@@ -43,7 +43,7 @@ class SearchToolBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        //MenuBtn()
+        MenuBtn()
       ],
     );
   }

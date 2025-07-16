@@ -2,24 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
-import 'package:komik/assets/typography.dart';
 import 'package:komik/components/cards/setting_tile.dart';
 import 'package:komik/components/texts/base_text.dart';
+import 'package:komik/components/texts/language_text.dart';
 import 'package:komik/components/texts/option_text.dart';
 import 'package:komik/components/texts/toolbar_title.dart';
 import 'package:komik/components/tool-bars/settings_toolbar.dart';
 
-class Settings extends StatefulWidget {
+class Settings extends StatelessWidget {
   const Settings({super.key});
-
-  @override
-  State<Settings> createState() => _SettingsState();
-}
-
-class _SettingsState extends State<Settings> {
-  final Map<String, dynamic> userSettings = {
-    'automatic-search': false
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -27,32 +18,28 @@ class _SettingsState extends State<Settings> {
       appBar: SettingsToolBar(
         title: ToolbarTitle('Configurações')
       ),
-      body: _content(),
-    );
-  }
-
-  Widget _content() {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 24),
-      child: Column(
-        spacing: 12,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: SettingTile(
-              icon: HeroIcons.language,
-              label: 'Linguagem',
-              trailing: Text('Pt-BR', style: KomikTypography.language),
-              action: () {
-                debugPrint('Open language selector modal');
-              },
+      body: Container(
+        margin: EdgeInsets.symmetric(vertical: 24),
+        child: Column(
+          spacing: 12,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: SettingTile(
+                icon: HeroIcons.language,
+                label: 'Linguagem',
+                trailing: LanguageText('Pt-BR'),
+                action: () {
+                  debugPrint('Open language selector modal');
+                },
+              ),
             ),
-          ),
-          _divider(),
-          _settingArea(),
-        ],
-      ),
+            _divider(),
+            _settingArea(context),
+          ],
+        ),
+      )
     );
   }
 
@@ -64,7 +51,7 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  Widget _settingArea() {
+  Widget _settingArea(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
       child: Column(
@@ -80,10 +67,6 @@ class _SettingsState extends State<Settings> {
             ),
             action: () => Navigator.pushNamed(context, '/local-files'),
           ),
-          _suboption(
-            title: 'Busca automática',
-            subtitle: 'Ativada, irá buscar por quadrinhos por todo o armazenamento do dispositivo. Pode afetar a performance do aplicativo.'
-          )
         ],
       ),
     );
@@ -110,17 +93,6 @@ class _SettingsState extends State<Settings> {
                 )
               ],
             ),
-          ),
-          CupertinoSwitch(
-            value: userSettings['automatic-search'],
-            activeTrackColor: Palette.details,
-            thumbColor: Palette.white,
-            inactiveTrackColor: Palette.items,
-            onChanged: (bool value) {
-              setState(() {
-                userSettings['automatic-search'] = value;
-              });
-            }
           )
         ],
       ),

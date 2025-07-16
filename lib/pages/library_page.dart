@@ -95,13 +95,15 @@ class LibraryPage extends StatelessWidget {
     return StreamBuilder(
       stream: comicManager.fetch(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return _amount();
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
             child: NotFoundComics()
           );
+        } else {
+          return ComicsFounded(with_section: true, comics: snapshot.data!);
         }
-
-        return ComicsFounded(with_section: true, comics: snapshot.data!);
       }
     );
   }
