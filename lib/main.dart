@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/icons/logo.dart';
@@ -13,8 +14,10 @@ import 'package:komik/pages/library_page.dart';
 import 'package:komik/pages/reader_page.dart';
 import 'package:komik/pages/reading_page.dart';
 import 'package:komik/pages/search_page.dart';
+import 'package:komik/pages/settings/idioms_page.dart';
 import 'package:komik/pages/settings/local_files_page.dart';
 import 'package:komik/pages/settings/settings.dart';
+import 'package:komik/service/config/user_settings.dart';
 import 'package:komik/service/database/database.dart';
 import 'package:komik/service/database/models/collection.dart';
 import 'package:komik/service/database/models/comic.dart';
@@ -22,17 +25,15 @@ import 'package:komik/service/database/models/reading.dart';
 import 'package:komik/service/managers/collection_manager.dart';
 import 'package:komik/service/managers/comic_manager.dart';
 import 'package:komik/service/managers/reading_manager.dart';
-// import 'package:komik/service/database/models/comic.dart';
-// import 'package:komik/service/models/comic.dart';
 import 'package:komik/service/utils/comic_loader.dart';
 import 'package:komik/service/utils/file_manager.dart';
 import 'package:komik/service/utils/permissions_manager.dart';
 import 'package:komik/widgets/accept_storage_permission.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  await UserSettings.initInstance();
 
   runApp(const KomikApp());
 }
@@ -57,12 +58,14 @@ class _KomikAppState extends State<KomikApp> {
   late CollectionManager collectionManager;
   late ReadingManager readingManager;
 
-  int index = 0;
+  late UserSettings userSettings = UserSettings.getInstance();
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  final List<Locale> idioms = [
+    Locale('en'),
+    Locale('pt', 'BR')
+  ];
+
+  int index = 0;
 
   @override
   void dispose() {
@@ -72,7 +75,9 @@ class _KomikAppState extends State<KomikApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      locale: Locale(userSettings.language),
+      supportedLocales: idioms,
       title: appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -96,6 +101,7 @@ class _KomikAppState extends State<KomikApp> {
                                 ),
         '/settings': (context) => Settings(),
         '/local-files': (context) => LocalFilesPage(),
+        '/idioms': (context) => IdiomsPage(idioms),
         '/edit-comic': (context) => EditComicInfos()
       },
     );
@@ -226,6 +232,8 @@ class _KomikAppState extends State<KomikApp> {
       }
     );
     
+    
+
     await fileManager.createComicsFolder();
 
     if (comicManager.haveNoData()) {

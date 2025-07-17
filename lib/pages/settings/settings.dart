@@ -8,9 +8,16 @@ import 'package:komik/components/texts/language_text.dart';
 import 'package:komik/components/texts/option_text.dart';
 import 'package:komik/components/texts/toolbar_title.dart';
 import 'package:komik/components/tool-bars/settings_toolbar.dart';
+import 'package:komik/service/config/user_settings.dart';
+import 'package:get/get.dart';
+import 'package:komik/service/config/user_settings_controller.dart';
 
 class Settings extends StatelessWidget {
-  const Settings({super.key});
+  late UserSettings userSettings = UserSettings.getInstance();
+
+  final settingsController = Get.put(UserSettingsController());
+
+  Settings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +31,9 @@ class Settings extends StatelessWidget {
           spacing: 12,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: SettingTile(
-                icon: HeroIcons.language,
-                label: 'Linguagem',
-                trailing: LanguageText('Pt-BR'),
-                action: () {
-                  debugPrint('Open language selector modal');
-                },
-              ),
-            ),
+            _idiom(context),
             _divider(),
-            _settingArea(context),
+            _defaultFolder(context),
           ],
         ),
       )
@@ -51,7 +48,21 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Widget _settingArea(BuildContext context) {
+  Widget _idiom(BuildContext context) {
+    return Obx(
+      () => Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: SettingTile(
+          icon: HeroIcons.language,
+          label: 'Linguagem',
+          trailing: LanguageText(settingsController.language.value),
+          action: () => Navigator.pushNamed(context, '/idioms')
+        ),
+      )
+    );
+  }
+
+  Widget _defaultFolder(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
       child: Column(
