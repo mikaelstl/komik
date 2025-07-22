@@ -6,8 +6,9 @@ import 'package:komik/components/buttons/options_btn.dart';
 import 'package:komik/components/cards/comic_thumb.dart';
 import 'package:komik/components/texts/base_text.dart';
 import 'package:komik/components/texts/subtitle.dart';
+import 'package:komik/l10n/app_localizations.dart';
 
-class CollectionCard extends StatelessWidget {
+class CollectionCard extends StatefulWidget {
   final String        title;
   final List<String>  editions;
   final Uint8List     thumb;
@@ -22,10 +23,15 @@ class CollectionCard extends StatelessWidget {
   });
 
   @override
+  State<CollectionCard> createState() => _CollectionCardState();
+}
+
+class _CollectionCardState extends State<CollectionCard> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          callback();
+          widget.callback();
         },
         child: Container(
           color: Palette.transparent,
@@ -54,12 +60,14 @@ class CollectionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: ComicThumb(
-        thumb: MemoryImage(thumb),
+        thumb: MemoryImage(widget.thumb),
       ),
     );
   }
 
   Widget _infos() {
+    final editionTxt = AppLocalizations.of(context)!.editions;
+
     return Expanded(
       child: Padding(
       padding: EdgeInsets.symmetric(vertical: 12),
@@ -68,8 +76,8 @@ class CollectionCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          BaseText(title),
-          Subtitle('Edições ${editions.first} - ${editions.last}'),
+          BaseText(widget.title),
+          Subtitle('$editionTxt ${widget.editions.first} - ${widget.editions.last}'),
         ],
       )
     )

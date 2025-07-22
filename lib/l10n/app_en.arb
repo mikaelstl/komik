@@ -1,0 +1,22 @@
+{
+  "editions": "Editions",
+  "edition": "Edition",
+  "page": "Page",
+  "folder": "Folder",
+  "no_comics_found": "No comics found",
+  "add": "Add comics",
+  "collections": "Collections",
+  "comics": "Comics",
+  "delete": "Delete",
+  "go_to_collection": "Go to collection",
+  "edit": "Edit",
+  "idioms": "Idioms",
+  "file_location": "File location",
+  "settings": "Settings",
+  "collection_withour_comics": "This collection does not contain comics",
+  "see_more": "See more",
+  "no_collection": "No collections",
+  "reading": "Reading",
+  "no_reading": "No readings",
+  "all": "All"
+}

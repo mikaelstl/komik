@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komik/components/cards/comic_card.dart';
 import 'package:komik/components/devider/section_devider.dart';
+import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/service/database/models/comic.dart';
 import 'package:komik/service/dto/comic_reader_infos.dart';
 
@@ -16,13 +17,16 @@ class ComicsFounded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final comicsTxt = AppLocalizations.of(context)!.comics;
+    final editionTxt = AppLocalizations.of(context)!.edition;
+
     return Column(
       spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _withSection
           ? SectionDevider(
-            text: '${comics.length} Quadrinhos',
+            text: '${comics.length} $comicsTxt',
           ) : Container(),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
@@ -33,7 +37,7 @@ class ComicsFounded extends StatelessWidget {
                 return ComicCard(
                   title: comic.title,
                   subtitle: comic.subtitle,
-                  edition: 'Edição ${comic.edition}',
+                  edition: '$editionTxt ${comic.edition}',
                   thumb: comic.thumb,
                   isReading: comic.reading,
                   callback: () => toReader(comic, context)

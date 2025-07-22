@@ -3,12 +3,15 @@ import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
 import 'package:komik/components/texts/action_button_text.dart';
 import 'package:komik/components/texts/base_text.dart';
+import 'package:komik/l10n/app_localizations.dart';
 
 class NotFoundComics extends StatelessWidget {
   const NotFoundComics({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final noComics = AppLocalizations.of(context)!.no_comics_found;
+    final add = AppLocalizations.of(context)!.add;
     return Column(
       spacing: 12,
       mainAxisSize: MainAxisSize.max,
@@ -20,14 +23,14 @@ class NotFoundComics extends StatelessWidget {
           color: Palette.comic_icon,
           style: HeroIconStyle.solid,
         ),
-        BaseText('Nenhum quadrinho encontrado'),
+        BaseText(noComics),
         TextButton(
           style: TextButton.styleFrom(
             padding: EdgeInsets.all(0)
               
           ),
           onPressed: () => debugPrint('Go to Files Selector'),
-          child: ActionButtonText('Adicionar')
+          child: ActionButtonText(add)
         )
       ],
     );

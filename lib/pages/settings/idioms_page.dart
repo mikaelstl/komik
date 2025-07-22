@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:komik/components/cards/idiom_tile.dart';
 import 'package:komik/components/texts/option_text.dart';
 import 'package:komik/components/tool-bars/settings_toolbar.dart';
+import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/service/config/user_settings.dart';
 import 'package:komik/service/config/user_settings_controller.dart';
 
@@ -18,7 +19,7 @@ class IdiomsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SettingsToolBar(
-        title: OptionText('Idiomas')
+        title: OptionText(AppLocalizations.of(context)!.idioms)
       ),
       body: SingleChildScrollView(
         child: Column(

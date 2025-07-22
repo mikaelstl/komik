@@ -9,6 +9,7 @@ import 'package:komik/components/texts/action_button_text.dart';
 import 'package:komik/components/texts/base_text.dart';
 import 'package:komik/components/texts/titles.dart';
 import 'package:komik/components/tool-bars/tool_bar.dart';
+import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/service/database/models/collection.dart';
 import 'package:komik/service/database/models/comic.dart';
 import 'package:komik/service/dto/comic_reader_infos.dart';
@@ -178,7 +179,7 @@ class _CollectionInfoPageState extends State<CollectionInfoPage> {
             color: Palette.comic_icon,
             style: HeroIconStyle.solid,
           ),
-          BaseText('Esta coleção não possui quadrinhos'),
+          BaseText(AppLocalizations.of(context)!.collection_withour_comics),
         ],
       ),
     );
@@ -202,7 +203,7 @@ class _CollectionInfoPageState extends State<CollectionInfoPage> {
         color: Palette.details,
         style: HeroIconStyle.micro,
       ),
-      label: ActionButtonText('Ver mais '),
+      label: ActionButtonText('${AppLocalizations.of(context)!.see_more} '),
     );
   }
 }

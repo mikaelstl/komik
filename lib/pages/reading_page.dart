@@ -3,10 +3,11 @@ import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
 import 'package:komik/components/cards/reading_comic_card.dart';
 import 'package:komik/components/texts/base_text.dart';
+import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/service/dto/comic_reader_infos.dart';
 import 'package:komik/service/managers/reading_manager.dart';
 
-class ReadingPage extends StatelessWidget {
+class ReadingPage extends StatefulWidget {
   final ReadingManager readingManager;
 
   const ReadingPage({
@@ -15,6 +16,11 @@ class ReadingPage extends StatelessWidget {
   });
 
   @override
+  State<ReadingPage> createState() => _ReadingPageState();
+}
+
+class _ReadingPageState extends State<ReadingPage> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: double.infinity,
@@ -22,7 +28,7 @@ class ReadingPage extends StatelessWidget {
       child: SingleChildScrollView(
         clipBehavior: Clip.none,
         child: StreamBuilder(
-          stream: readingManager.fetch(),
+          stream: widget.readingManager.fetch(),
           builder: (context, snapshot) {
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return _notFounded();
@@ -72,7 +78,7 @@ class ReadingPage extends StatelessWidget {
             color: Palette.comic_icon,
             style: HeroIconStyle.solid,
           ),
-          BaseText('Nenhuma coleção')
+          BaseText(AppLocalizations.of(context)!.no_reading)
         ],
       ),
     );

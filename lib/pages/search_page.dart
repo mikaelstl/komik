@@ -4,6 +4,7 @@ import 'package:komik/components/lists/comics_founded.dart';
 import 'package:komik/components/lists/collections_founded.dart';
 import 'package:komik/components/tool-bars/search_bar.dart';
 import 'package:komik/components/utils/checkboxes/check_mode.dart';
+import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/service/managers/collection_manager.dart';
 import 'package:komik/service/managers/comic_manager.dart';
 import 'package:komik/service/utils/states/search_filter_type.dart';
@@ -68,7 +69,7 @@ class _SearchPageState extends State<SearchPage> {
       spacing: 12,
       children: [
         CheckMode(
-          label: 'Tudo',
+          label: AppLocalizations.of(context)!.all,
           type: SearchFilterType.all,
           group: SearchFilterTypeState.mode.value,
           onChanged: (type) {
@@ -80,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
           },
         ),
         CheckMode(
-          label: 'Quadrinhos',
+          label: AppLocalizations.of(context)!.comics,
           type: SearchFilterType.comics,
           group: SearchFilterTypeState.mode.value,
           onChanged: (type) {
@@ -92,7 +93,7 @@ class _SearchPageState extends State<SearchPage> {
           },
         ),
         CheckMode(
-          label: 'Coleções',
+          label: AppLocalizations.of(context)!.collections,
           type: SearchFilterType.collections,
           group: SearchFilterTypeState.mode.value,
           onChanged: (type) {

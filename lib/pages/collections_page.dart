@@ -3,9 +3,10 @@ import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
 import 'package:komik/components/lists/collections_founded.dart';
 import 'package:komik/components/texts/base_text.dart';
+import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/service/managers/collection_manager.dart';
 
-class CollectionsPage extends StatelessWidget {
+class CollectionsPage extends StatefulWidget {
   final CollectionManager collectionManager;
 
   const CollectionsPage({
@@ -14,6 +15,11 @@ class CollectionsPage extends StatelessWidget {
   });
 
   @override
+  State<CollectionsPage> createState() => _CollectionsPageState();
+}
+
+class _CollectionsPageState extends State<CollectionsPage> {
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: double.infinity,
@@ -21,7 +27,7 @@ class CollectionsPage extends StatelessWidget {
       child: SingleChildScrollView(
         clipBehavior: Clip.none,
         child: StreamBuilder(
-          stream: collectionManager.fetch(),
+          stream: widget.collectionManager.fetch(),
           builder: (context, snapshot) {
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return _notFounded();
@@ -47,7 +53,7 @@ class CollectionsPage extends StatelessWidget {
             color: Palette.comic_icon,
             style: HeroIconStyle.solid,
           ),
-          BaseText('Nenhuma coleção')
+          BaseText(AppLocalizations.of(context)!.no_collection)
         ],
       ),
     );

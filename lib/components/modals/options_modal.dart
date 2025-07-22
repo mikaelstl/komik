@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
 import 'package:komik/components/texts/option_text.dart';
+import 'package:komik/l10n/app_localizations.dart';
 
 class OptionsModal extends StatelessWidget {
   const OptionsModal({super.key});
@@ -34,12 +35,12 @@ class OptionsModal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _option(
-            label: 'Editar',
+            label: AppLocalizations.of(context)!.edit,
             icon: HeroIcons.pencil,
             action: () => Navigator.pushNamed(context, '/edit-comic')
           ),
           _option(
-            label: 'Ir para coleção',
+            label: AppLocalizations.of(context)!.go_to_collection,
             icon: HeroIcons.bookmarkSquare,
             action: () {
               Navigator.pop(context);
@@ -47,7 +48,7 @@ class OptionsModal extends StatelessWidget {
             }
           ),
           _option(
-            label: 'Excluir',
+            label: AppLocalizations.of(context)!.delete,
             icon: HeroIcons.trash,
             action: (){}
           )

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komik/components/cards/collection_card.dart';
 import 'package:komik/components/devider/section_devider.dart';
+import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/service/database/models/collection.dart';
 
 class CollectionsFounded extends StatelessWidget {
@@ -15,13 +16,14 @@ class CollectionsFounded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final collectionsTxt = AppLocalizations.of(context)!.collections;
     return Column(
       spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _withSection
           ? SectionDevider(
-            text: '${collections.length} Coleções',
+            text: '${collections.length} $collectionsTxt',
           ) : Container(),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/icons/logo.dart';
 import 'package:komik/assets/palette.dart';
 import 'package:komik/components/tool-bars/tool_bar.dart';
+import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/pages/collection_info.dart';
 import 'package:komik/pages/collections_page.dart';
 import 'package:komik/pages/comics_page.dart';
@@ -29,8 +28,9 @@ import 'package:komik/service/utils/comic_loader.dart';
 import 'package:komik/service/utils/file_manager.dart';
 import 'package:komik/service/utils/permissions_manager.dart';
 import 'package:komik/widgets/accept_storage_permission.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await UserSettings.initInstance();
@@ -75,9 +75,15 @@ class _KomikAppState extends State<KomikApp> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       locale: Locale(userSettings.language),
       supportedLocales: idioms,
+      localizationsDelegates:const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       title: appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

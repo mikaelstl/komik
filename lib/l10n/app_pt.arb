@@ -1,0 +1,22 @@
+{
+  "editions": "Edições",
+  "edition": "Edição",
+  "page": "Página",
+  "folder": "Pasta",
+  "no_comics_found": "Nenhum quadrinho encontrado",
+  "add": "Adicionar quadrinhos",
+  "collections": "Coleções",
+  "comics": "Quadrinhos",
+  "delete": "Apagar",
+  "go_to_collection": "Ir para coleção",
+  "edit": "Editar",
+  "idioms": "Idiomas",
+  "file_location": "Local dos arquivos",
+  "settings": "Configurações",
+  "collection_withour_comics": "Esta coleção não possui quadrinhos",
+  "see_more": "Ver mais",
+  "no_collection": "Sem coleções",
+  "reading": "Lendo",
+  "no_reading": "Sem leituras",
+  "all": "Tudo"
+}

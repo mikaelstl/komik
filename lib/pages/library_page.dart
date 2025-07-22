@@ -4,6 +4,7 @@ import 'package:komik/components/devider/section_devider.dart';
 import 'package:komik/components/labels/not_found_comics.dart';
 import 'package:komik/components/lists/comics_founded.dart';
 import 'package:komik/components/utils/scroller/scroller.dart';
+import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/service/dto/comic_reader_infos.dart';
 import 'package:komik/service/managers/comic_manager.dart';
 import 'package:komik/service/managers/reading_manager.dart';
@@ -53,7 +54,7 @@ class LibraryPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SectionDevider(
-              text: 'Lendo',
+              text: AppLocalizations.of(context)!.reading,
             ),
             Scroller(
               direction: Axis.horizontal,

@@ -8,6 +8,7 @@ import 'package:komik/components/texts/language_text.dart';
 import 'package:komik/components/texts/option_text.dart';
 import 'package:komik/components/texts/toolbar_title.dart';
 import 'package:komik/components/tool-bars/settings_toolbar.dart';
+import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/service/config/user_settings.dart';
 import 'package:get/get.dart';
 import 'package:komik/service/config/user_settings_controller.dart';
@@ -23,7 +24,7 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SettingsToolBar(
-        title: ToolbarTitle('Configurações')
+        title: ToolbarTitle(AppLocalizations.of(context)!.settings)
       ),
       body: Container(
         margin: EdgeInsets.symmetric(vertical: 24),
@@ -54,7 +55,7 @@ class Settings extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: SettingTile(
           icon: HeroIcons.language,
-          label: 'Linguagem',
+          label: AppLocalizations.of(context)!.idioms,
           trailing: LanguageText(settingsController.language.value),
           action: () => Navigator.pushNamed(context, '/idioms')
         ),
@@ -69,7 +70,7 @@ class Settings extends StatelessWidget {
         children: [
           SettingTile(
             icon: HeroIcons.folder,
-            label: 'Local dos arquivos',
+            label: AppLocalizations.of(context)!.file_location,
             trailing: HeroIcon(
               HeroIcons.chevronRight,
               color: Palette.white,
