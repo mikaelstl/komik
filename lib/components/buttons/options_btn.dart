@@ -18,8 +18,8 @@ class OptionsBtn extends StatelessWidget {
         );
       },
       style: IconButton.styleFrom(
+        backgroundColor: Palette.details,
         shape: RoundedRectangleBorder(),
-        padding: EdgeInsets.all(16),
         alignment: Alignment.centerLeft,
       ),
       icon: HeroIcon(

@@ -35,7 +35,6 @@ class _IdiomsPageState extends State<IdiomsPage> {
             idiom: userSettings.getLanguageName(idiom.languageCode),
             code: idiom.languageCode,
             action: () {
-              print(idiom.languageCode);
               settingsController.setLanguage(idiom.languageCode).then(
                 (_) => Navigator.pop(context)
               );

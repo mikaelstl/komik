@@ -14,18 +14,11 @@ class ComicsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       height: double.infinity,
-      child: StreamBuilder(
-        stream: comicManager.fetch(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
-              child: NotFoundComics()
-            );
-          }
-          return ComicsFounded(with_section: false,comics: snapshot.data!);
-        })
+      clipBehavior: Clip.none,
+      child: comicManager.data.isEmpty
+              ? Center(child: NotFoundComics())
+              : ComicsFounded(with_section: false,comics: comicManager.data)
       );
   }
 }

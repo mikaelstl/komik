@@ -9,57 +9,49 @@ class ComicsFounded extends StatelessWidget {
   final bool _withSection;
   final List<Comic> comics;
 
-  const ComicsFounded({
-    super.key,
-    required this.comics,
-    required bool with_section
-  }) : _withSection = with_section;
+  const ComicsFounded(
+      {super.key, required this.comics, required bool with_section})
+      : _withSection = with_section;
 
   @override
   Widget build(BuildContext context) {
     final comicsTxt = AppLocalizations.of(context)!.comics;
     final editionTxt = AppLocalizations.of(context)!.edition;
 
-    return Column(
-      spacing: 12,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _withSection
-          ? SectionDevider(
-            text: '${comics.length} $comicsTxt',
-          ) : Container(),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            spacing: 12,
-            children: comics.map( 
-              (comic) {
-                return ComicCard(
-                  title: comic.title,
-                  subtitle: comic.subtitle,
-                  edition: '$editionTxt ${comic.edition}',
-                  thumb: comic.thumb,
-                  isReading: comic.reading,
-                  callback: () => toReader(comic, context)
-                );
-              }
-            ).toList()
-          ),  
-        )
-      ]
+    return SingleChildScrollView(
+      child: Column(
+          spacing: 12,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _withSection
+                ? SectionDevider(
+                    text: '${comics.length} $comicsTxt',
+                  )
+                : Container(),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                  spacing: 12,
+                  children: comics.map((comic) {
+                    return ComicCard(
+                        title: comic.title,
+                        subtitle: comic.subtitle,
+                        edition: '$editionTxt ${comic.edition}',
+                        thumb: comic.thumb,
+                        isReading: comic.reading,
+                        callback: () => toReader(comic, context));
+                  }).toList()),
+            )
+          ]),
     );
   }
 
   void toReader(Comic comic, BuildContext ctx) {
     final infos = ComicReaderInfos();
-      infos.comicID = comic.id;
-      infos.title = comic.title;
-      infos.path = comic.path;
-      infos.initPage = 0;
-    Navigator.pushNamed(
-      ctx,
-      '/reader',
-      arguments: infos
-    );
+    infos.comicID = comic.id;
+    infos.title = comic.title;
+    infos.path = comic.path;
+    infos.initPage = 0;
+    Navigator.pushNamed(ctx, '/reader', arguments: infos);
   }
 }

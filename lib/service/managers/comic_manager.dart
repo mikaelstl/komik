@@ -7,6 +7,8 @@ import 'package:komik/service/utils/interfaces/search_query.dart';
 class ComicManager implements SearchQuery<Comic> {
   late Box<Comic> _box;
 
+  final List<Comic> data = [];
+
   ComicManager({
     required Box<Comic> box
   }) : _box = box;

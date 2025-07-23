@@ -99,6 +99,7 @@ class LibraryPage extends StatelessWidget {
             child: NotFoundComics()
           );
         }
+        comicManager.data.addAll(snapshot.data!);
         return ComicsFounded(with_section: true, comics: snapshot.data!);
       }
     );

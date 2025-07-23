@@ -67,4 +67,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get all => 'Tudo';
+
+  @override
+  String get home => 'Início';
 }

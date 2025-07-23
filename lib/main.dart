@@ -99,7 +99,7 @@ class _KomikAppState extends State<KomikApp> {
           ),
           initialRoute: '/',
           routes: {
-            '/': (context) => _app(),
+            '/': (context) => _app(context),
             '/search': (context) => SearchPage(
               comicManager: comicManager,
               collectionManager: collectionManager,
@@ -118,7 +118,7 @@ class _KomikAppState extends State<KomikApp> {
     );
   }
 
-  Widget _app() {
+  Widget _app(BuildContext context) {
     return Scaffold(
       appBar: ToolBar(
         leading: Logo(),
@@ -131,7 +131,7 @@ class _KomikAppState extends State<KomikApp> {
           : AcceptStoragePermission();
         }
       ),
-      bottomNavigationBar: _navBar(),
+      bottomNavigationBar: _navBar(context),
     );
   }
 
@@ -155,7 +155,7 @@ class _KomikAppState extends State<KomikApp> {
     return pages[index]!;
   }
 
-  Widget _navBar() {
+  Widget _navBar(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           border: Border(top: BorderSide(color: Palette.details, width: 2))),
@@ -179,7 +179,7 @@ class _KomikAppState extends State<KomikApp> {
                   size: 24,
                   color: Palette.white,
                 ),
-                label: 'Inicio',
+                label: AppLocalizations.of(context)!.home,
               ),
               NavigationDestination(
                 icon: HeroIcon(
@@ -188,7 +188,7 @@ class _KomikAppState extends State<KomikApp> {
                   size: 24,
                   color: Palette.white,
                 ),
-                label: 'Quadrinhos',
+                label: AppLocalizations.of(context)!.comics,
               ),
               NavigationDestination(
                 icon: HeroIcon(
@@ -197,7 +197,7 @@ class _KomikAppState extends State<KomikApp> {
                   size: 24,
                   color: Palette.white,
                 ),
-                label: 'Coleções',
+                label: AppLocalizations.of(context)!.collections,
               ),
               NavigationDestination(
                 icon: HeroIcon(
@@ -206,7 +206,7 @@ class _KomikAppState extends State<KomikApp> {
                   size: 24,
                   color: Palette.white,
                 ),
-                label: 'Lendo',
+                label: AppLocalizations.of(context)!.reading,
               ),
             ],
             selectedIndex: index,
