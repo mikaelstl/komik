@@ -1,27 +1,29 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
 import 'package:komik/components/cards/setting_tile.dart';
-import 'package:komik/components/texts/base_text.dart';
 import 'package:komik/components/texts/language_text.dart';
 import 'package:komik/components/texts/option_text.dart';
+import 'package:komik/components/texts/subtitle.dart';
 import 'package:komik/components/texts/toolbar_title.dart';
 import 'package:komik/components/tool-bars/settings_toolbar.dart';
 import 'package:komik/l10n/app_localizations.dart';
-import 'package:komik/service/config/user_settings.dart';
-import 'package:get/get.dart';
 import 'package:komik/service/config/user_settings_controller.dart';
+import 'package:provider/provider.dart';
 
-class Settings extends StatelessWidget {
-  late UserSettings userSettings = UserSettings.getInstance();
+class Settings extends StatefulWidget {
+  const Settings({super.key});
 
-  final settingsController = Get.put(UserSettingsController());
+  @override
+  State<Settings> createState() => _SettingsState();
+}
 
-  Settings({super.key});
+class _SettingsState extends State<Settings> {
+  late UserSettingsController settingsController;
 
   @override
   Widget build(BuildContext context) {
+    settingsController = Provider.of<UserSettingsController>(context);
     return Scaffold(
       appBar: SettingsToolBar(
         title: ToolbarTitle(AppLocalizations.of(context)!.settings)
@@ -35,6 +37,7 @@ class Settings extends StatelessWidget {
             _idiom(context),
             _divider(),
             _defaultFolder(context),
+            _divider(),
           ],
         ),
       )
@@ -50,17 +53,15 @@ class Settings extends StatelessWidget {
   }
 
   Widget _idiom(BuildContext context) {
-    return Obx(
-      () => Padding(
+    return Padding(
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: SettingTile(
           icon: HeroIcons.language,
           label: AppLocalizations.of(context)!.idioms,
-          trailing: LanguageText(settingsController.language.value),
+          trailing: LanguageText(settingsController.language),
           action: () => Navigator.pushNamed(context, '/idioms')
         ),
-      )
-    );
+      );
   }
 
   Widget _defaultFolder(BuildContext context) {
@@ -72,42 +73,35 @@ class Settings extends StatelessWidget {
             icon: HeroIcons.folder,
             label: AppLocalizations.of(context)!.file_location,
             trailing: HeroIcon(
-              HeroIcons.chevronRight,
+              HeroIcons.arrowPath,
               color: Palette.white,
               style: HeroIconStyle.solid,
               size: 26,
             ),
-            action: () => Navigator.pushNamed(context, '/local-files'),
+            action: () => debugPrint("OPEN FOLDER SELECTOR")
           ),
+          _suboption()
         ],
       ),
     );
   }
 
-  Widget _suboption({
-    required String title,
-    required String subtitle
-  }){
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+  Widget _suboption(){
+    return Row(
         children: [
-          SizedBox(
-            width: 274,
+          Padding(
+            padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
             child: Column(
-              spacing: 8,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                OptionText(title),
-                BaseText(
-                  subtitle,
-                  softWrap: true,
+                OptionText(settingsController.defaultFolder),
+                Subtitle(
+                  '000 ${AppLocalizations.of(context)!.comics}',
                 )
               ],
             ),
           )
         ],
-      ),
     );
   }
 }

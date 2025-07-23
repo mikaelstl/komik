@@ -41,7 +41,10 @@ class FileManager {
               _comicLoader.load(file);
             }
           },
-          onDone: () => debugPrint('BUSCA CONCLUÍDA'),
+          onDone: () {
+            debugPrint('BUSCA CONCLUÍDA');
+            // _comicLoader.setAmount();
+          },
           onError: (err) => debugPrint('ERRO >>> $err')
         );
 

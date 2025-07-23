@@ -14,9 +14,9 @@ import 'package:komik/pages/reader_page.dart';
 import 'package:komik/pages/reading_page.dart';
 import 'package:komik/pages/search_page.dart';
 import 'package:komik/pages/settings/idioms_page.dart';
-import 'package:komik/pages/settings/local_files_page.dart';
 import 'package:komik/pages/settings/settings.dart';
 import 'package:komik/service/config/user_settings.dart';
+import 'package:komik/service/config/user_settings_controller.dart';
 import 'package:komik/service/database/database.dart';
 import 'package:komik/service/database/models/collection.dart';
 import 'package:komik/service/database/models/comic.dart';
@@ -29,6 +29,7 @@ import 'package:komik/service/utils/file_manager.dart';
 import 'package:komik/service/utils/permissions_manager.dart';
 import 'package:komik/widgets/accept_storage_permission.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -75,40 +76,44 @@ class _KomikAppState extends State<KomikApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      locale: Locale(userSettings.language),
-      supportedLocales: idioms,
-      localizationsDelegates:const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      title: appName,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Palette.background,
-        primaryTextTheme: GoogleFonts.poppinsTextTheme(),
-        textTheme: GoogleFonts.poppinsTextTheme(),
-        fontFamily: 'Poppins',
-        useMaterial3: true,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => _app(),
-        '/search': (context) => SearchPage(
-          comicManager: comicManager,
-          collectionManager: collectionManager,
-        ),
-        '/collection': (context) => CollectionInfoPage(),
-        '/reader': (context) => ReaderPage(
-                                  fetchPages: comicLoader.fetchPages,
-                                  readingManager: readingManager,
-                                ),
-        '/settings': (context) => Settings(),
-        '/local-files': (context) => LocalFilesPage(),
-        '/idioms': (context) => IdiomsPage(idioms),
-        '/edit-comic': (context) => EditComicInfos()
+    return ChangeNotifierProvider(
+      create: (context) => UserSettingsController(),
+      builder: (context, child) {
+        return MaterialApp(
+          locale: Locale(userSettings.language),
+          supportedLocales: idioms,
+          localizationsDelegates:const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          title: appName,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            scaffoldBackgroundColor: Palette.background,
+            primaryTextTheme: GoogleFonts.poppinsTextTheme(),
+            textTheme: GoogleFonts.poppinsTextTheme(),
+            fontFamily: 'Poppins',
+            useMaterial3: true,
+          ),
+          initialRoute: '/',
+          routes: {
+            '/': (context) => _app(),
+            '/search': (context) => SearchPage(
+              comicManager: comicManager,
+              collectionManager: collectionManager,
+            ),
+            '/collection': (context) => CollectionInfoPage(),
+            '/reader': (context) => ReaderPage(
+                                      fetchPages: comicLoader.fetchPages,
+                                      readingManager: readingManager,
+                                    ),
+            '/settings': (context) => Settings(),
+            '/idioms': (context) => IdiomsPage(idioms),
+            '/edit-comic': (context) => EditComicInfos()
+          },
+        );
       },
     );
   }
@@ -238,8 +243,6 @@ class _KomikAppState extends State<KomikApp> {
       }
     );
     
-    
-
     await fileManager.createComicsFolder();
 
     if (comicManager.haveNoData()) {

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
 import 'package:flutter/widgets.dart';
+import 'package:komik/service/config/user_settings.dart';
 import 'package:komik/service/database/models/collection.dart';
 import 'package:komik/service/dto/create_comic.dart';
 import 'package:komik/service/managers/collection_manager.dart';
@@ -19,6 +20,8 @@ class ComicLoader {
   late ComicManager _comicManager;
 
   late CollectionManager _collectionManager;
+
+  final UserSettings userSettings = UserSettings.getInstance();
 
   ComicLoader({
     required ComicManager comic_manager,
@@ -43,6 +46,10 @@ class ComicLoader {
     } catch (err) {
       throw Exception(err);
     }
+  }
+
+  void setAmount() async {
+    await userSettings.setComicsAmount(_comicManager.amount());
   }
 
   CreateComicDTO fetchInfos(String filePath) {

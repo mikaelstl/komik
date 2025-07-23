@@ -18,6 +18,10 @@ class UserSettings {
 
   Future<void> setDefaultFolder(String value) async => await _sharedPreferences.setString('default_folder', value);
 
+  int get comicsAmount => _sharedPreferences.getInt('comics_amount') ?? 0;
+
+  Future<void> setComicsAmount(int value) async => await _sharedPreferences.setInt('comics_amount', value);
+
   static Future<void> initInstance() async {
     _instance = UserSettings();
     _instance._sharedPreferences = await SharedPreferences.getInstance();
