@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/icons/logo.dart';
 import 'package:komik/assets/palette.dart';
+import 'package:komik/assets/typography.dart';
+import 'package:komik/components/tool-bars/nav_bar.dart';
 import 'package:komik/components/tool-bars/tool_bar.dart';
 import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/pages/collection_info.dart';
@@ -79,6 +81,10 @@ class _KomikAppState extends State<KomikApp> {
     return ChangeNotifierProvider(
       create: (context) => UserSettingsController(),
       builder: (context, child) {
+        final settingsController = Provider.of<UserSettingsController>(context);
+        debugPrint("language: ${settingsController.language}");
+        debugPrint("default_folder: ${settingsController.defaultFolder}");
+        
         return MaterialApp(
           locale: Locale(userSettings.language),
           supportedLocales: idioms,
@@ -92,8 +98,18 @@ class _KomikAppState extends State<KomikApp> {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             scaffoldBackgroundColor: Palette.background,
+            appBarTheme: AppBarTheme(backgroundColor: Palette.items),
+            /* colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: Palette.white,
+              onPrimary: Palette.white,
+            ), */
             primaryTextTheme: GoogleFonts.poppinsTextTheme(),
-            textTheme: GoogleFonts.poppinsTextTheme(),
+            textTheme: GoogleFonts.poppinsTextTheme().copyWith(
+              bodyMedium: KomikTypography.base,
+              titleMedium: KomikTypography.title,
+              titleLarge: KomikTypography.toolbar_title,
+              bodySmall: KomikTypography.label
+            ),
             fontFamily: 'Poppins',
             useMaterial3: true,
           ),
@@ -131,7 +147,14 @@ class _KomikAppState extends State<KomikApp> {
           : AcceptStoragePermission();
         }
       ),
-      bottomNavigationBar: _navBar(context),
+      bottomNavigationBar: NavBar(
+        index: index,
+        action: (value) {
+          setState(() {
+            index = value;
+          });
+        },
+      ),
     );
   }
 
@@ -153,67 +176,6 @@ class _KomikAppState extends State<KomikApp> {
     };
 
     return pages[index]!;
-  }
-
-  Widget _navBar(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: Palette.details, width: 2))),
-      child: NavigationBarTheme(
-          data: NavigationBarThemeData(
-              labelTextStyle: WidgetStateProperty.all(TextStyle(
-            color: Palette.white,
-            fontSize: 12,
-          ))),
-          child: NavigationBar(
-            onDestinationSelected: (value) {
-              setState(() {
-                index = value;
-              });
-            },
-            destinations: [
-              NavigationDestination(
-                icon: HeroIcon(
-                  HeroIcons.home,
-                  style: HeroIconStyle.solid,
-                  size: 24,
-                  color: Palette.white,
-                ),
-                label: AppLocalizations.of(context)!.home,
-              ),
-              NavigationDestination(
-                icon: HeroIcon(
-                  HeroIcons.bookOpen,
-                  style: HeroIconStyle.solid,
-                  size: 24,
-                  color: Palette.white,
-                ),
-                label: AppLocalizations.of(context)!.comics,
-              ),
-              NavigationDestination(
-                icon: HeroIcon(
-                  HeroIcons.wallet,
-                  style: HeroIconStyle.solid,
-                  size: 24,
-                  color: Palette.white,
-                ),
-                label: AppLocalizations.of(context)!.collections,
-              ),
-              NavigationDestination(
-                icon: HeroIcon(
-                  HeroIcons.bookmarkSquare,
-                  style: HeroIconStyle.solid,
-                  size: 24,
-                  color: Palette.white,
-                ),
-                label: AppLocalizations.of(context)!.reading,
-              ),
-            ],
-            selectedIndex: index,
-            backgroundColor: Palette.items,
-            indicatorColor: const Color.fromARGB(83, 228, 25, 59),
-          )),
-    );
   }
 
   Future<void> initialize() async {

@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:external_path/external_path.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:komik/assets/palette.dart';
@@ -10,6 +15,7 @@ import 'package:komik/components/tool-bars/settings_toolbar.dart';
 import 'package:komik/l10n/app_localizations.dart';
 import 'package:komik/service/config/user_settings_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as p;
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -78,7 +84,30 @@ class _SettingsState extends State<Settings> {
               style: HeroIconStyle.solid,
               size: 26,
             ),
-            action: () => debugPrint("OPEN FOLDER SELECTOR")
+            action: () async {
+              debugPrint('Open file picker');
+              final path = await ExternalPath.getExternalStoragePublicDirectory('');
+              final root = Directory(path);
+              String? folder = await FilesystemPicker.open(
+                context: context,
+                title: "Select folder",
+                pickText: "Select this folder",
+                rootDirectory: root,
+                fsType: FilesystemType.folder,
+                folderIconColor: Palette.items,
+                itemFilter: (FileSystemEntity entity, String path, String name) {
+                  name = p.relative(entity.path, from: root.path);
+                  return !name.startsWith('.');
+                },
+              );
+
+              if (folder != null) {
+                folder = p.relative(folder, from: root.path);
+                settingsController.setDefaultFolder(folder).then(
+                  (_) => setState(() {})
+                );
+              }
+            }
           ),
           _suboption()
         ],

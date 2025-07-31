@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:komik/components/buttons/add_btn.dart';
 import 'package:komik/components/cards/folder_tile.dart';
@@ -15,8 +16,10 @@ class LocalFilesPage extends StatelessWidget {
       ),
       body: _content(),
       floatingActionButton: AddBtn(
-        action: () {
+        action: () async {
           debugPrint('Open file picker');
+          String? folder = await FilePicker.platform.getDirectoryPath();
+          debugPrint(folder);
         },
       ),
     );
