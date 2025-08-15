@@ -3,31 +3,33 @@ import 'dart:io';
 
 import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
+import 'package:komik/service/config/user_settings_controller.dart';
+import 'package:komik/service/types/root.dart';
 import 'package:komik/service/utils/comic_loader.dart';
 import 'package:komik/service/utils/permissions_manager.dart';
 
 class FileManager {
   final ComicLoader _comicLoader;
   final PermissionsManager _permissionManager;
-  final StreamController<FileSystemEntity> controller = StreamController<FileSystemEntity>();
+  // final StreamController<FileSystemEntity> controller = StreamController<FileSystemEntity>();
+  final UserSettingsController settingsController;
   
   FileManager({
     required ComicLoader comic_loader,
     required PermissionsManager permission_manager,
-  }) : _comicLoader = comic_loader, _permissionManager = permission_manager;
+    required UserSettingsController settings_controller
+  }) : _comicLoader = comic_loader, _permissionManager = permission_manager, settingsController = settings_controller;
 
   Future<void> createComicsFolder() async {
     if (_permissionManager.haveStorageAccess) {
-      final path = await ExternalPath.getExternalStoragePublicDirectory('');
-      
-      await Directory('$path/Comics').create(recursive: true);
+      await Directory('${Root.path}/Comics').create(recursive: true);
     }
   }
 
-  void fetch() async {
+  Future<void> fetch() async {
     if (_permissionManager.haveStorageAccess) {
       try {
-        final path = await ExternalPath.getExternalStoragePublicDirectory('Comics');
+        final path = await ExternalPath.getExternalStoragePublicDirectory(settingsController.defaultFolder);
         
         final directory = Directory(path);
  

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heroicons/heroicons.dart';
@@ -26,6 +28,7 @@ import 'package:komik/service/database/models/reading.dart';
 import 'package:komik/service/managers/collection_manager.dart';
 import 'package:komik/service/managers/comic_manager.dart';
 import 'package:komik/service/managers/reading_manager.dart';
+import 'package:komik/service/types/root.dart';
 import 'package:komik/service/utils/comic_loader.dart';
 import 'package:komik/service/utils/file_manager.dart';
 import 'package:komik/service/utils/permissions_manager.dart';
@@ -38,7 +41,23 @@ Future<void> main() async {
 
   await UserSettings.initInstance();
 
-  runApp(const KomikApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<DB>(
+          create: (_) => DB(),
+          dispose: (_, sp) => sp.close(),
+        ),
+        Provider<UserSettingsController>(
+          create: (_) => UserSettingsController()
+        ),
+        Provider<FileManager>(
+          create: (_) => FileManager()
+        )
+      ],
+      child: const KomikApp(),
+    )
+  );
 }
 
 class KomikApp extends StatefulWidget {
@@ -51,11 +70,11 @@ class KomikApp extends StatefulWidget {
 class _KomikAppState extends State<KomikApp> {
   final String appName = 'Komik';
 
-  final _database = DB();
-
   late PermissionsManager permissionManager = PermissionsManager();
   late FileManager fileManager;
   late ComicLoader comicLoader;
+
+  late DB _database;
 
   late ComicManager comicManager;
   late CollectionManager collectionManager;
@@ -73,7 +92,7 @@ class _KomikAppState extends State<KomikApp> {
   @override
   void dispose() {
     super.dispose();
-    _database.dispose();
+    _database.close();
   }
 
   @override
@@ -82,8 +101,7 @@ class _KomikAppState extends State<KomikApp> {
       create: (context) => UserSettingsController(),
       builder: (context, child) {
         final settingsController = Provider.of<UserSettingsController>(context);
-        debugPrint("language: ${settingsController.language}");
-        debugPrint("default_folder: ${settingsController.defaultFolder}");
+        _database = Provider.of<DB>(context);
         
         return MaterialApp(
           locale: Locale(userSettings.language),
@@ -99,23 +117,14 @@ class _KomikAppState extends State<KomikApp> {
           theme: ThemeData(
             scaffoldBackgroundColor: Palette.background,
             appBarTheme: AppBarTheme(backgroundColor: Palette.items),
-            /* colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: Palette.white,
-              onPrimary: Palette.white,
-            ), */
             primaryTextTheme: GoogleFonts.poppinsTextTheme(),
-            textTheme: GoogleFonts.poppinsTextTheme().copyWith(
-              bodyMedium: KomikTypography.base,
-              titleMedium: KomikTypography.title,
-              titleLarge: KomikTypography.toolbar_title,
-              bodySmall: KomikTypography.label
-            ),
+            textTheme: GoogleFonts.poppinsTextTheme(),
             fontFamily: 'Poppins',
             useMaterial3: true,
           ),
           initialRoute: '/',
           routes: {
-            '/': (context) => _app(context),
+            '/': (context) => _app(context, settingsController),
             '/search': (context) => SearchPage(
               comicManager: comicManager,
               collectionManager: collectionManager,
@@ -134,13 +143,13 @@ class _KomikAppState extends State<KomikApp> {
     );
   }
 
-  Widget _app(BuildContext context) {
+  Widget _app(BuildContext context, UserSettingsController controller) {
     return Scaffold(
       appBar: ToolBar(
         leading: Logo(),
       ),
       body: FutureBuilder(
-        future: initialize(),
+        future: initialize(controller),
         builder: (context, snapshot) {
           return permissionManager.haveStorageAccess
           ? _content(index)
@@ -178,7 +187,9 @@ class _KomikAppState extends State<KomikApp> {
     return pages[index]!;
   }
 
-  Future<void> initialize() async {
+  Future<void> initialize(UserSettingsController controller) async {
+    await Root.set();
+
     await _database.init().then(
       (_) => debugPrint("OBJECT BOX INICIADO")
     );
@@ -199,16 +210,17 @@ class _KomikAppState extends State<KomikApp> {
           );
           fileManager = FileManager(
             comic_loader: comicLoader,
-            permission_manager: permissionManager
+            permission_manager: permissionManager,
+            settings_controller: controller
           );
-        });  
+        });
       }
     );
     
     await fileManager.createComicsFolder();
 
     if (comicManager.haveNoData()) {
-      fileManager.fetch();
+      unawaited(fileManager.fetch());
     }
   }
 }
